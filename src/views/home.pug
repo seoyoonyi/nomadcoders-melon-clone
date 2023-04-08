@@ -1,5 +1,18 @@
 extends base
 
 block content
-     h1 Popular City Pop Songs
-     #song-list
+  h1 Popular City Pop Songs
+    #player-controls
+      button#play-button
+        i.fa.fa-play
+      button#pause-button
+        i.fa.fa-pause
+      button#stop-button
+        i.fa.fa-stop
+      input#volume-slider(type='range', min='0', max='1', step='0.1', value='1')
+  #song-list
+
+  #player
+  audio#audio-player
+
+//-   iframe#video-player(src='https://www.youtube.com/embed/WCCovrKvAtU', frameborder='0', allowfullscreen='')
