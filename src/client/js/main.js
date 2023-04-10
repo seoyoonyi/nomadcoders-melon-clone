@@ -1,28 +1,33 @@
-import "../scss/styles.scss";
+import '../scss/styles.scss';
 
-import { getPopularSongs } from "./api";
-import { playSong } from "./play";
+import { getPopularSongs } from './api';
+import { playSong } from './play';
 
 const renderSongs = (songs) => {
-  const songList = document.querySelector("#song-list");
-  if (!songList) return;
-  songList.innerHTML = "";
+	console.log('songs', songs);
 
-  songs.forEach((song) => {
-    const li = document.createElement("li");
-    li.innerText = `${song.title}`;
-    li.setAttribute("data-video-id", song.videoId);
-    songList.appendChild(li);
-  });
+	const songList = document.querySelector('#song-list');
+	if (!songList) return;
+	songList.innerHTML = '';
 
-  songList.addEventListener("click", (event) => {
-    const videoId = event.target.getAttribute("data-video-id");
-    if (videoId) {
-      playSong(`https://www.youtube.com/watch?v=${videoId}`);
-    }
-  });
+	songs.forEach((song) => {
+		const li = document.createElement('li');
+		li.innerHTML = `
+		<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">
+		<p>${song.title}</p>
+	  `;
+		li.setAttribute('data-video-id', song.videoId);
+		songList.appendChild(li);
+	});
+
+	songList.addEventListener('click', (event) => {
+		const videoId = event.target.getAttribute('data-video-id');
+		if (videoId) {
+			playSong(`https://www.youtube.com/watch?v=${videoId}`);
+		}
+	});
 };
 
 getPopularSongs().then((response) => {
-  renderSongs(response.data);
+	renderSongs(response.data);
 });
