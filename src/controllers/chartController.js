@@ -1,27 +1,32 @@
 import dotenv from 'dotenv';
 import axios from 'axios';
+import moment from 'moment'; // Add this import statement for moment library
 
 dotenv.config();
 const API_KEY = process.env.YOUTUBE_API_KEY;
 export const findChart = async (req, res) => {
 	try {
-		const response = await axios.get(
+		const searchResponse = await axios.get(
 			`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=CityPop&type=video&key=${API_KEY}&order=viewCount`,
 		);
-
-		console.log('serverresponse', response.data.items);
-		const videos = response.data.items.map((item) => ({
-			title: item.snippet.title,
-			description: item.snippet.description,
-			thumbnail: item.snippet.thumbnails.high.url,
-			videoId: item.id.videoId,
-			audioUrl: `https://www.youtube.com/watch?v=${item.id.videoId}`,
-			duration:
-				item.contentDetails && item.contentDetails.duration
-					? item.contentDetails.duration
-					: 'unknown', // contentDetails 속성이 존재하지 않는 경우나 duration 속성이 없는 경우, 'unknown' 값을 할당
-		}));
-		res.json(videos);
+		const videos = searchResponse.data.items;
+		const videoDetailsPromises = videos.map(async (video) => {
+			const videoId = video.id.videoId;
+			const videoDetailsResponse = await axios.get(
+				`https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoId}&key=${API_KEY}`,
+			);
+			const duration = videoDetailsResponse.data.items[0].contentDetails.duration;
+			return {
+				title: video.snippet.title,
+				description: video.snippet.description,
+				thumbnail: video.snippet.thumbnails.high.url,
+				videoId: videoId,
+				audioUrl: `https://www.youtube.com/watch?v=${videoId}`,
+				duration: moment.utc(moment.duration(duration).asMilliseconds()).format('HH:mm:ss'),
+			};
+		});
+		const updatedVideos = await Promise.all(videoDetailsPromises);
+		res.json(updatedVideos);
 	} catch (error) {
 		console.error(error);
 		res.status(500).send('Internal Server Error');

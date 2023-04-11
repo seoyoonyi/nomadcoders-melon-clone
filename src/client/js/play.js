@@ -5,19 +5,41 @@ const playButton = document.querySelector('#play-button');
 const pauseButton = document.querySelector('#pause-button');
 const stopButton = document.querySelector('#stop-button');
 const volumeSlider = document.querySelector('#volume-slider');
+const progressContainer = document.querySelector('.audio-progress');
+const progressBar = document.querySelector('.audio-progress-bar');
 
-const audioProgressBar = document.querySelector('.audio-progress-bar');
-const audioProgressContainer = document.querySelector('.audio-progress');
+let videoId;
+let lastVideoId;
+
+window.onYouTubeIframeAPIReady = () => {
+	player = new YT.Player('player', {
+		height: '0',
+		width: '0',
+		videoId,
+		playerVars: {
+			autoplay: 1,
+			controls: 0,
+			modestbranding: 1,
+			playsinline: 1,
+			enablejsapi: 1,
+			disablekb: 1,
+		},
+		events: {
+			onReady: (event) => {
+				onPlayerReady(event, videoId);
+			},
+			onStateChange: onPlayerStateChange,
+		},
+	});
+};
 
 const getVideoId = (url) => {
 	const match = url.match(/(?:https?:\/\/)?(?:www\.)?youtu(?:be\.com|\.be)\/(?:watch\?v=)?(.+)/);
 	return match ? match[1] : null;
 };
 
-let lastVideoId;
-
 export const playSong = (url) => {
-	const videoId = getVideoId(url);
+	videoId = getVideoId(url);
 	if (!videoId) return;
 
 	if (player) {
@@ -28,60 +50,57 @@ export const playSong = (url) => {
 		player.loadVideoById(videoId);
 	} else {
 		player = new YT.Player('player', {
-			height: '360',
-			width: '640',
+			height: '0',
+			width: '0',
 			videoId,
 			playerVars: {
-				autoplay: 0,
+				autoplay: 1,
 				controls: 0,
 				modestbranding: 1,
+				playsinline: 1,
+				enablejsapi: 1,
+				disablekb: 1,
 			},
 			events: {
 				onReady: (event) => {
-					event.target.playVideo();
-					playAudio(`https://www.youtube.com/watch?v=${videoId}`);
+					onPlayerReady(event, videoId);
 				},
-				onStateChange: (event) => {
-					// Remove unnecessary logic related to video playback
-					if (event.data === YT.PlayerState.ENDED) {
-						lastVideoId = null;
-						stopAudio();
-					} else {
-						lastVideoId = videoId;
-					}
-				},
+				onStateChange: onPlayerStateChange,
 			},
 		});
 	}
 };
 
-export const pauseSong = () => {
-	if (player) {
-		player.pauseVideo();
-		pauseAudio();
-	}
+const onPlayerReady = (event, videoId) => {
+	event.target.playVideo();
+	lastVideoId = videoId;
+	playAudio(`https://www.youtube.com/watch?v=${videoId}`);
 };
 
-export const stopSong = () => {
-	if (player) {
-		player.stopVideo();
+const onPlayerStateChange = (event) => {
+	if (event.data === YT.PlayerState.PLAYING) {
+		progressBar.max = player.getDuration(); // Update from audioProgressBar to progressBar
+		setInterval(() => updateProgressBar(player), 1000);
+	}
+
+	if (event.data === YT.PlayerState.ENDED) {
+		lastVideoId = null;
 		stopAudio();
+	} else {
+		lastVideoId = videoId;
 	}
 };
 
-export const setVolume = (volume) => {
-	if (player) {
-		if (volume <= 0) {
-			player.setVolume(0);
-			audioPlayer.volume = 0;
-		} else if (volume >= 1) {
-			player.setVolume(100);
-			audioPlayer.volume = 1;
-		} else {
-			player.setVolume(volume * 100);
-			audioPlayer.volume = volume;
-		}
-	}
+const updateProgressBar = (player) => {
+	const currentTime = player.getCurrentTime();
+	const duration = player.getDuration();
+	const progressBarWidth = (currentTime / duration) * 100 + '%';
+	progressBar.style.width = progressBarWidth;
+};
+
+const updateProgressBarIndependently = () => {
+	progressBar.max = player.getDuration();
+	setInterval(() => updateProgressBar(player), 1000);
 };
 
 const playAudio = (url) => {
@@ -93,39 +112,79 @@ const pauseAudio = () => {
 	if (!audioPlayer.paused) {
 		audioPlayer.pause();
 	}
+	if (player && player.getPlayerState() === YT.PlayerState.PLAYING) {
+		player.pauseVideo();
+	}
 };
 
 const stopAudio = () => {
 	audioPlayer.pause();
 	audioPlayer.currentTime = 0;
+	if (player) {
+		player.stopVideo();
+	}
 };
 
-const updateProgressBar = (progressBar, progressContainer) => {
-	const percent = (progressBar.currentTime / progressBar.duration) * 100;
-	progressContainer.style.width = `${percent}%`;
-};
+let isVolumeSliderBeingInteracted = false;
 
+const setVolume = (volume) => {
+	if (audioPlayer) {
+		if (volume <= 0) {
+			audioPlayer.volume = 0;
+		} else if (volume >= 1) {
+			audioPlayer.volume = 1;
+		} else {
+			audioPlayer.volume = volume;
+		}
+	}
+
+	if (!isVolumeSliderBeingInteracted) {
+		const progressBarPosition = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+		progressBar.style.width = `${progressBarPosition}%`;
+	}
+
+	volumeSlider.value = volume * 100;
+};
 playButton.addEventListener('click', () => {
-	playSong('https://www.youtube.com/watch?v=WCCovrKvAtU');
+	if (!audioPlayer.paused) {
+		pauseAudio();
+	}
+	playSong(`https://www.youtube.com/watch?v=${videoId}`);
+	updateProgressBarIndependently();
 });
 
 pauseButton.addEventListener('click', () => {
-	pauseSong();
+	pauseAudio();
+	updateProgressBarIndependently();
 });
 
 stopButton.addEventListener('click', () => {
-	stopSong();
+	stopAudio();
+	updateProgressBarIndependently();
 });
+
 volumeSlider.addEventListener('input', () => {
-	const volume = volumeSlider.value;
+	isVolumeSliderBeingInteracted = true;
+	const volume = volumeSlider.value / 100;
 	setVolume(volume);
 });
 
-audioProgressBar.addEventListener('input', () => {
-	audioPlayer.currentTime = audioProgressBar.value * audioPlayer.duration;
-	updateProgressBar(audioPlayer, audioProgressContainer);
+volumeSlider.addEventListener('mouseup', () => {
+	isVolumeSliderBeingInteracted = false;
 });
 
-audioPlayer.addEventListener('timeupdate', () => {
-	updateProgressBar(audioPlayer, audioProgressContainer);
+progressBar.addEventListener('click', (event) => {
+	const progressBarWidth = progressBar.clientWidth;
+	const clickPosition = event.clientX - progressBar.getBoundingClientRect().left;
+	const seekPercentage = clickPosition / progressBarWidth;
+	const seekTime = seekPercentage * audioPlayer.duration;
+	audioPlayer.currentTime = seekTime;
+});
+
+progressContainer.addEventListener('click', (event) => {
+	const progressContainerWidth = progressContainer.offsetWidth;
+	const clickedX = event.clientX - progressContainer.offsetLeft;
+	const progressBarWidth = (clickedX / progressContainerWidth) * 100;
+	const seekTime = (progressBarWidth / 100) * player.getDuration();
+	player.seekTo(seekTime, true);
 });
