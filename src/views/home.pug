@@ -2,21 +2,22 @@ extends base
 
 block content
   h1 Popular City Pop Songs
-    #player-controls
-      button#play-button
-        i.fa.fa-play
-      button#pause-button
-        i.fa.fa-pause
-      button#stop-button
-        i.fa.fa-stop
-      input#volume-slider(type='range', min='0', max='1', step='0.1', value='1')
-  #song-list
-
   #player
   audio#audio-player
   
   .video-player
-  video
-  .controls
-    .progress
-      .progress-bar
+    video
+    .controls
+
+
+      #player-controls
+        button#play-button
+          i.fa.fa-play
+        button#pause-button
+          i.fa.fa-pause
+        button#stop-button
+          i.fa.fa-stop
+        input#volume-slider(type='range', min='0', max='1', step='0.01', value='1')
+    .progress.audio-progress
+      .progress-bar.audio-progress-bar
+  #song-list

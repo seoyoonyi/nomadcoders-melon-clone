@@ -13,18 +13,18 @@ const renderSongs = (songs) => {
 	songs.forEach((song) => {
 		const li = document.createElement('li');
 		li.innerHTML = `
-		<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">
-		<p>${song.title}</p>
-	  `;
+			<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">
+			<p>${song.title}</p>
+		`;
 		li.setAttribute('data-video-id', song.videoId);
 		songList.appendChild(li);
-	});
 
-	songList.addEventListener('click', (event) => {
-		const videoId = event.target.getAttribute('data-video-id');
-		if (videoId) {
-			playSong(`https://www.youtube.com/watch?v=${videoId}`);
-		}
+		li.addEventListener('click', (event) => {
+			const videoId = event.currentTarget.getAttribute('data-video-id');
+			if (videoId) {
+				playSong(`https://www.youtube.com/watch?v=${videoId}`);
+			}
+		});
 	});
 };
 

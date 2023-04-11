@@ -6,6 +6,9 @@ const pauseButton = document.querySelector('#pause-button');
 const stopButton = document.querySelector('#stop-button');
 const volumeSlider = document.querySelector('#volume-slider');
 
+const audioProgressBar = document.querySelector('.audio-progress-bar');
+const audioProgressContainer = document.querySelector('.audio-progress');
+
 const getVideoId = (url) => {
 	const match = url.match(/(?:https?:\/\/)?(?:www\.)?youtu(?:be\.com|\.be)\/(?:watch\?v=)?(.+)/);
 	return match ? match[1] : null;
@@ -39,9 +42,7 @@ export const playSong = (url) => {
 					playAudio(`https://www.youtube.com/watch?v=${videoId}`);
 				},
 				onStateChange: (event) => {
-					if (event.data === YT.PlayerState.PLAYING) {
-						pauseAudio();
-					}
+					// Remove unnecessary logic related to video playback
 					if (event.data === YT.PlayerState.ENDED) {
 						lastVideoId = null;
 						stopAudio();
@@ -67,10 +68,19 @@ export const stopSong = () => {
 		stopAudio();
 	}
 };
+
 export const setVolume = (volume) => {
 	if (player) {
-		player.setVolume(volume);
-		audioPlayer.volume = volume;
+		if (volume <= 0) {
+			player.setVolume(0);
+			audioPlayer.volume = 0;
+		} else if (volume >= 1) {
+			player.setVolume(100);
+			audioPlayer.volume = 1;
+		} else {
+			player.setVolume(volume * 100);
+			audioPlayer.volume = volume;
+		}
 	}
 };
 
@@ -90,6 +100,11 @@ const stopAudio = () => {
 	audioPlayer.currentTime = 0;
 };
 
+const updateProgressBar = (progressBar, progressContainer) => {
+	const percent = (progressBar.currentTime / progressBar.duration) * 100;
+	progressContainer.style.width = `${percent}%`;
+};
+
 playButton.addEventListener('click', () => {
 	playSong('https://www.youtube.com/watch?v=WCCovrKvAtU');
 });
@@ -106,25 +121,11 @@ volumeSlider.addEventListener('input', () => {
 	setVolume(volume);
 });
 
-const video = document.querySelector('video');
-const progressBar = document.querySelector('.progress-bar');
-const progressContainer = document.querySelector('.progress');
-
-// 비디오가 로드되면 최대 길이를 계산합니다.
-video.addEventListener('loadedmetadata', () => {
-	progressBar.style.width = '0%';
-	const duration = video.duration;
-	progressContainer.addEventListener('click', (event) => {
-		const offsetX = event.offsetX;
-		const percent = offsetX / progressContainer.offsetWidth;
-		progressBar.style.width = percent * 100 + '%';
-		video.currentTime = percent * duration;
-	});
+audioProgressBar.addEventListener('input', () => {
+	audioPlayer.currentTime = audioProgressBar.value * audioPlayer.duration;
+	updateProgressBar(audioPlayer, audioProgressContainer);
 });
 
-// 비디오가 재생되면 진행바를 업데이트합니다.
-video.addEventListener('timeupdate', () => {
-	const currentTime = video.currentTime;
-	const percent = (currentTime / video.duration) * 100;
-	progressBar.style.width = percent + '%';
+audioPlayer.addEventListener('timeupdate', () => {
+	updateProgressBar(audioPlayer, audioProgressContainer);
 });
