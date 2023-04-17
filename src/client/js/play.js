@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 let player;
+
 const audioPlayer = document.querySelector('#audio-player');
 const playButton = document.querySelector('#play-button');
 const pauseButton = document.querySelector('#pause-button');
@@ -82,7 +83,6 @@ const onPlayerStateChange = (event) => {
 		progressBar.max = player.getDuration(); // Update from audioProgressBar to progressBar
 		setInterval(() => updateProgressBar(player), 1000);
 	}
-
 	if (event.data === YT.PlayerState.ENDED) {
 		lastVideoId = null;
 		stopAudio();
@@ -125,26 +125,21 @@ const stopAudio = () => {
 	}
 };
 
-let isVolumeSliderBeingInteracted = false;
-
-const setVolume = (volume) => {
-	if (audioPlayer) {
+export const setVolume = (volume) => {
+	if (player) {
 		if (volume <= 0) {
+			player.setVolume(0);
 			audioPlayer.volume = 0;
 		} else if (volume >= 1) {
+			player.setVolume(100);
 			audioPlayer.volume = 1;
 		} else {
+			player.setVolume(volume * 100);
 			audioPlayer.volume = volume;
 		}
 	}
-
-	if (!isVolumeSliderBeingInteracted) {
-		const progressBarPosition = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-		progressBar.style.width = `${progressBarPosition}%`;
-	}
-
-	volumeSlider.value = volume * 100;
 };
+
 playButton.addEventListener('click', () => {
 	if (!audioPlayer.paused) {
 		pauseAudio();
@@ -164,26 +159,15 @@ stopButton.addEventListener('click', () => {
 });
 
 volumeSlider.addEventListener('input', () => {
-	isVolumeSliderBeingInteracted = true;
-	const volume = volumeSlider.value / 100;
+	// const volume = volumeSlider.value / 100;
+
+	const volume = volumeSlider.value;
 	setVolume(volume);
-});
-
-volumeSlider.addEventListener('mouseup', () => {
-	isVolumeSliderBeingInteracted = false;
-});
-
-progressBar.addEventListener('click', (event) => {
-	const progressBarWidth = progressBar.clientWidth;
-	const clickPosition = event.clientX - progressBar.getBoundingClientRect().left;
-	const seekPercentage = clickPosition / progressBarWidth;
-	const seekTime = seekPercentage * audioPlayer.duration;
-	audioPlayer.currentTime = seekTime;
 });
 
 progressContainer.addEventListener('click', (event) => {
 	const progressContainerWidth = progressContainer.offsetWidth;
-	const clickedX = event.clientX - progressContainer.offsetLeft;
+	const clickedX = event.offsetX;
 	const progressBarWidth = (clickedX / progressContainerWidth) * 100;
 	const seekTime = (progressBarWidth / 100) * player.getDuration();
 	player.seekTo(seekTime, true);

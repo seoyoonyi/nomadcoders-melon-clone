@@ -1,6 +1,7 @@
 extends base
 
 block content
+  #player
   div.player-box
     .title-box
       h1 Popular City Pop Songs
@@ -26,14 +27,14 @@ block content
         .audio-progress
           .audio-progress-bar
           br
-          #player-controls.player-controls
-            button#play-button
-              i.fa.fa-play
-            button#pause-button
-              i.fa.fa-pause
-            button#stop-button
-              i.fa.fa-stop
-            input#volume-slider(type='range', min='0', max='1', step='0.01', value='1')
+        #player-controls.player-controls
+          button#play-button
+            i.fa.fa-play
+          button#pause-button
+            i.fa.fa-pause
+          button#stop-button
+            i.fa.fa-stop
+          input#volume-slider(type='range', min='0', max='1', step='0.01', value='1')
 
   #song-list.song-list
 
