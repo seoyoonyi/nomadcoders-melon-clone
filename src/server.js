@@ -6,6 +6,8 @@ import MongoStore from 'connect-mongo';
 import { localsMiddleware } from './middlewares';
 import rootRouter from './routers/rootRouter';
 import chartRouter from './routers/chartRouter';
+import registerUpRouter from './routers/registerUpRouter';
+import signUpRouter from './routers/signUpRouter';
 const app = express();
 const logger = morgan('dev');
 
@@ -25,11 +27,15 @@ app.use(
 );
 app.use(flash());
 app.use(localsMiddleware);
+
+app.use('/public', express.static('public'));
 app.use('/uploads', express.static('uploads'));
 app.use('/static', express.static('assets'));
 
 app.use('/', rootRouter);
 app.use('/api/chart', chartRouter);
+app.use('/signup', signUpRouter);
+app.use('/api/user', registerUpRouter);
 /*
 Add more routers here!
 */
