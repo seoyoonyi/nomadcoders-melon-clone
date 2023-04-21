@@ -1,0 +1,352 @@
+{
+	"kind": "youtube#searchListResponse",
+	"etag": "4ZsLf204yMsLULkQJROytoRjXLU",
+	"nextPageToken": "CAoQAA",
+	"regionCode": "KR",
+	"pageInfo": {
+		"totalResults": 1000000,
+		"resultsPerPage": 10
+	},
+	"items": [
+		{
+			"kind": "youtube#searchResult",
+			"etag": "hDSw3JZJkc-SzZuAbrdXz1LkPoM",
+			"id": {
+				"kind": "youtube#video",
+				"videoId": "T_lC2O1oIew"
+			},
+			"snippet": {
+				"publishedAt": "2021-11-11T15:00:30Z",
+				"channelId": "UCfb-Ly0RXaUGxglFJmPji1g",
+				"title": "竹内まりや -  Plastic Love (Official Music Video)",
+				"description": "竹内まりや「プラスティック・ラブ」 ミュージック・ビデオのフル・サイズ・バージョンが遂に公開！ このミュージック・ビデオ ...",
+				"thumbnails": {
+					"default": {
+						"url": "https://i.ytimg.com/vi/T_lC2O1oIew/default.jpg",
+						"width": 120,
+						"height": 90
+					},
+					"medium": {
+						"url": "https://i.ytimg.com/vi/T_lC2O1oIew/mqdefault.jpg",
+						"width": 320,
+						"height": 180
+					},
+					"high": {
+						"url": "https://i.ytimg.com/vi/T_lC2O1oIew/hqdefault.jpg",
+						"width": 480,
+						"height": 360
+					}
+				},
+				"channelTitle": "Warner Music Japan",
+				"liveBroadcastContent": "none",
+				"publishTime": "2021-11-11T15:00:30Z"
+			}
+		},
+		{
+			"kind": "youtube#searchResult",
+			"etag": "x3GWvG_RyQvwGaO5WaS5AhR1DoE",
+			"id": {
+				"kind": "youtube#video",
+				"videoId": "WCCovrKvAtU"
+			},
+			"snippet": {
+				"publishedAt": "2020-12-23T05:55:03Z",
+				"channelId": "UCV0i32e9JPM98pPuG6hQ2RQ",
+				"title": "80s japanese city pop playlist",
+				"description": "an early gift to my subs!! thank you for almost 80K subs!! i love each and every one of you.. thank you for supporting me and i will ...",
+				"thumbnails": {
+					"default": {
+						"url": "https://i.ytimg.com/vi/WCCovrKvAtU/default.jpg",
+						"width": 120,
+						"height": 90
+					},
+					"medium": {
+						"url": "https://i.ytimg.com/vi/WCCovrKvAtU/mqdefault.jpg",
+						"width": 320,
+						"height": 180
+					},
+					"high": {
+						"url": "https://i.ytimg.com/vi/WCCovrKvAtU/hqdefault.jpg",
+						"width": 480,
+						"height": 360
+					}
+				},
+				"channelTitle": "rainbeary",
+				"liveBroadcastContent": "none",
+				"publishTime": "2020-12-23T05:55:03Z"
+			}
+		},
+		{
+			"kind": "youtube#searchResult",
+			"etag": "6qrDF5I51MoZd9qmpf7alq0udHQ",
+			"id": {
+				"kind": "youtube#video",
+				"videoId": "hFv-Tu1Vs5g"
+			},
+			"snippet": {
+				"publishedAt": "2020-01-10T05:13:10Z",
+				"channelId": "UCJT9zZRUYk0W20WQmfcDlug",
+				"title": "Mariya Takeuchi - Plastic Love 竹内 まりや (1985) [1080p]",
+				"description": "Since there were no uploads of this song in HD, here it is. Hopefully it doesn't get taken down. (I don't own this) Link to my Mariya ...",
+				"thumbnails": {
+					"default": {
+						"url": "https://i.ytimg.com/vi/hFv-Tu1Vs5g/default.jpg",
+						"width": 120,
+						"height": 90
+					},
+					"medium": {
+						"url": "https://i.ytimg.com/vi/hFv-Tu1Vs5g/mqdefault.jpg",
+						"width": 320,
+						"height": 180
+					},
+					"high": {
+						"url": "https://i.ytimg.com/vi/hFv-Tu1Vs5g/hqdefault.jpg",
+						"width": 480,
+						"height": 360
+					}
+				},
+				"channelTitle": "STheTeller",
+				"liveBroadcastContent": "none",
+				"publishTime": "2020-01-10T05:13:10Z"
+			}
+		},
+		{
+			"kind": "youtube#searchResult",
+			"etag": "k5OzxJV9jHiDNPpBo8b17aE2kt0",
+			"id": {
+				"kind": "youtube#video",
+				"videoId": "mml46rXspXQ"
+			},
+			"snippet": {
+				"publishedAt": "2019-10-27T22:29:53Z",
+				"channelId": "UCEgFcgGxiPwxUbFe11hhWFA",
+				"title": "Japanese 80s City Pop Compilation",
+				"description": "DISCLAIMER – I am aware the background is Taipei and not Japan, this was intentional. This video is a recreation of a similar ...",
+				"thumbnails": {
+					"default": {
+						"url": "https://i.ytimg.com/vi/mml46rXspXQ/default.jpg",
+						"width": 120,
+						"height": 90
+					},
+					"medium": {
+						"url": "https://i.ytimg.com/vi/mml46rXspXQ/mqdefault.jpg",
+						"width": 320,
+						"height": 180
+					},
+					"high": {
+						"url": "https://i.ytimg.com/vi/mml46rXspXQ/hqdefault.jpg",
+						"width": 480,
+						"height": 360
+					}
+				},
+				"channelTitle": "dinoherobios65",
+				"liveBroadcastContent": "none",
+				"publishTime": "2019-10-27T22:29:53Z"
+			}
+		},
+		{
+			"kind": "youtube#searchResult",
+			"etag": "QFPn6-51IfVtoljvp-8enE0_M4Y",
+			"id": {
+				"kind": "youtube#video",
+				"videoId": "DOjrQ9DByhA"
+			},
+			"snippet": {
+				"publishedAt": "2020-04-30T15:00:15Z",
+				"channelId": "UCGkbhPqWn0mCGrJAc03imWg",
+				"title": "【ネオシティポップとか】Neo City Pop etc. Mix + Video",
+				"description": "IV△７ - III7 - VIm7 - Vm7 - I7 とか Track List 01 スチャダラパー × Nice & Smooth / 今夜はBoogie Down Bronx (original mix) 0:00 ...",
+				"thumbnails": {
+					"default": {
+						"url": "https://i.ytimg.com/vi/DOjrQ9DByhA/default.jpg",
+						"width": 120,
+						"height": 90
+					},
+					"medium": {
+						"url": "https://i.ytimg.com/vi/DOjrQ9DByhA/mqdefault.jpg",
+						"width": 320,
+						"height": 180
+					},
+					"high": {
+						"url": "https://i.ytimg.com/vi/DOjrQ9DByhA/hqdefault.jpg",
+						"width": 480,
+						"height": 360
+					}
+				},
+				"channelTitle": "Lil Kio",
+				"liveBroadcastContent": "none",
+				"publishTime": "2020-04-30T15:00:15Z"
+			}
+		},
+		{
+			"kind": "youtube#searchResult",
+			"etag": "rvLOuOBCNJ-1zGy1uq-Zfh2f0Ls",
+			"id": {
+				"kind": "youtube#video",
+				"videoId": "VGMrcfpg0h8"
+			},
+			"snippet": {
+				"publishedAt": "2021-02-08T05:35:50Z",
+				"channelId": "UCLp-DnFjzv4vgUtrx1meQ4Q",
+				"title": "80년대 리듬감있는 일본시티팝 모음  80&#39;s City pop mix",
+				"description": "",
+				"thumbnails": {
+					"default": {
+						"url": "https://i.ytimg.com/vi/VGMrcfpg0h8/default.jpg",
+						"width": 120,
+						"height": 90
+					},
+					"medium": {
+						"url": "https://i.ytimg.com/vi/VGMrcfpg0h8/mqdefault.jpg",
+						"width": 320,
+						"height": 180
+					},
+					"high": {
+						"url": "https://i.ytimg.com/vi/VGMrcfpg0h8/hqdefault.jpg",
+						"width": 480,
+						"height": 360
+					}
+				},
+				"channelTitle": "은하짱",
+				"liveBroadcastContent": "none",
+				"publishTime": "2021-02-08T05:35:50Z"
+			}
+		},
+		{
+			"kind": "youtube#searchResult",
+			"etag": "_EF2cMq03j7AzPCTZHierpIYKCs",
+			"id": {
+				"kind": "youtube#video",
+				"videoId": "rdVJDd_VLDU"
+			},
+			"snippet": {
+				"publishedAt": "2021-04-10T15:56:05Z",
+				"channelId": "UCdxiWF9iLp0bmLlh_96_Cyg",
+				"title": "아이유 - 라일락 (시티팝 리믹스) IU - LILAC (Citypop remix)",
+				"description": "IU #LILAC #아이유 #라일락 #리믹스 80년대 시티팝 느낌을 더한 리믹스입니다 보컬 음질이 좋지않아 매우 아쉽지만 재밌게 들어 ...",
+				"thumbnails": {
+					"default": {
+						"url": "https://i.ytimg.com/vi/rdVJDd_VLDU/default.jpg",
+						"width": 120,
+						"height": 90
+					},
+					"medium": {
+						"url": "https://i.ytimg.com/vi/rdVJDd_VLDU/mqdefault.jpg",
+						"width": 320,
+						"height": 180
+					},
+					"high": {
+						"url": "https://i.ytimg.com/vi/rdVJDd_VLDU/hqdefault.jpg",
+						"width": 480,
+						"height": 360
+					}
+				},
+				"channelTitle": "DANPIA",
+				"liveBroadcastContent": "none",
+				"publishTime": "2021-04-10T15:56:05Z"
+			}
+		},
+		{
+			"kind": "youtube#searchResult",
+			"etag": "ighI4WIfdBRPZ8o3pe3BPggrT7I",
+			"id": {
+				"kind": "youtube#video",
+				"videoId": "y4o9wS1TVQA"
+			},
+			"snippet": {
+				"publishedAt": "2020-11-06T09:21:41Z",
+				"channelId": "UCBE4xAbWESF5ofPzS9eLhgg",
+				"title": "夜の雰囲気に合うメロウな女性ボーカルChill mix（CityPop/R&amp;B）",
+				"description": "夜 #chill #hiphop 【Taxiで夜の帰り道聴きたいヒップホップ/R&B Chill mix】 ...",
+				"thumbnails": {
+					"default": {
+						"url": "https://i.ytimg.com/vi/y4o9wS1TVQA/default.jpg",
+						"width": 120,
+						"height": 90
+					},
+					"medium": {
+						"url": "https://i.ytimg.com/vi/y4o9wS1TVQA/mqdefault.jpg",
+						"width": 320,
+						"height": 180
+					},
+					"high": {
+						"url": "https://i.ytimg.com/vi/y4o9wS1TVQA/hqdefault.jpg",
+						"width": 480,
+						"height": 360
+					}
+				},
+				"channelTitle": "HeartStation365",
+				"liveBroadcastContent": "none",
+				"publishTime": "2020-11-06T09:21:41Z"
+			}
+		},
+		{
+			"kind": "youtube#searchResult",
+			"etag": "QWpk7IEcxWUs5wcboMlC-V50KuQ",
+			"id": {
+				"kind": "youtube#video",
+				"videoId": "OycgifzTHgk"
+			},
+			"snippet": {
+				"publishedAt": "2019-09-10T08:54:58Z",
+				"channelId": "UCBahLEaKHwSEjJt__xsMYlQ",
+				"title": "한국 시티팝(City Pop) 갬성 노래 모음. Vol 2.5ㅣ KOREAN CITYPOP STYLE MIX. VOL 2.5",
+				"description": "저작권으로 인한 금지곡 삭제 후 재업로드 된 버젼입니다. (Vol 2.5) ◈ 01, 06트랙 노래가 새로 추가 됐으며 03, 18트랙 영상이 변경 ...",
+				"thumbnails": {
+					"default": {
+						"url": "https://i.ytimg.com/vi/OycgifzTHgk/default.jpg",
+						"width": 120,
+						"height": 90
+					},
+					"medium": {
+						"url": "https://i.ytimg.com/vi/OycgifzTHgk/mqdefault.jpg",
+						"width": 320,
+						"height": 180
+					},
+					"high": {
+						"url": "https://i.ytimg.com/vi/OycgifzTHgk/hqdefault.jpg",
+						"width": 480,
+						"height": 360
+					}
+				},
+				"channelTitle": "안갬성",
+				"liveBroadcastContent": "none",
+				"publishTime": "2019-09-10T08:54:58Z"
+			}
+		},
+		{
+			"kind": "youtube#searchResult",
+			"etag": "MhP33U08HJC4LPDWTavLG6q1SmE",
+			"id": {
+				"kind": "youtube#video",
+				"videoId": "GBr_SthDzgA"
+			},
+			"snippet": {
+				"publishedAt": "2019-01-21T01:17:45Z",
+				"channelId": "UCYiK-ZhB7Hc2kmDgU0wVbSA",
+				"title": "city pop radio - cherish your solitude",
+				"description": "Enjoy your stay here. ✌ Subscribe! (there is a 15seconds delay for the alert to appear,if you have subscriptions on private the ...",
+				"thumbnails": {
+					"default": {
+						"url": "https://i.ytimg.com/vi/GBr_SthDzgA/default.jpg",
+						"width": 120,
+						"height": 90
+					},
+					"medium": {
+						"url": "https://i.ytimg.com/vi/GBr_SthDzgA/mqdefault.jpg",
+						"width": 320,
+						"height": 180
+					},
+					"high": {
+						"url": "https://i.ytimg.com/vi/GBr_SthDzgA/hqdefault.jpg",
+						"width": 480,
+						"height": 360
+					}
+				},
+				"channelTitle": "Taptietana",
+				"liveBroadcastContent": "none",
+				"publishTime": "2019-01-21T01:17:45Z"
+			}
+		}
+	]
+}

@@ -1,9 +1,9 @@
-h1 회원가입
-form(action="/signup", method="post")
+h1 로그인
+form(action="/login", method="post")
     label(for="email") 이메일:
     input(type="email", id="email", name="email", required)
     label(for="password") 비밀번호:
     input(type="password", id="password", name="password", required)
-    input(type="submit", value="회원가입")
-    p 이미 계정이 있으신가요?
-    a(href="/login") 로그인
+    input(type="submit", value="로그인")
+    p 아직 계정이 없으신가요?
+    a(href="/register") 회원가입

@@ -22,6 +22,7 @@
 		"express-flash": "^0.0.2",
 		"express-session": "^1.17.1",
 		"googleapis": "^114.0.0",
+		"jsonwebtoken": "^9.0.0",
 		"moment": "^2.29.4",
 		"mongodb": "^5.1.0",
 		"mongoose": "^5.12.3",
