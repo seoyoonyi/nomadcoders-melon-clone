@@ -1,41 +1,48 @@
 extends base
 
 block content
+
   #player
-  div.player-box
+  .player-box.modal
     .title-box
       h1 Popular City Pop Songs
       .window-box
-        button.window-hide
-          i.fa.fa-window-maximize
-        button.window-full
-          i.fa.fa-square
+        button.window-close
+          i.fa.fa-times-circle
+
     nav
       ul.menu
-        li chart
-        li playlist
+        li.chart 
+          u c
+          span hart
+        li.playlist
+          u p
+          span laylist
 
-    audio#audio-player.audio-player
-  
+    .audio-group.inner-box 
+      audio#audio-player.audio-player
 
-    .audio-info-box
-     .thumb-nail
-     .title 아이유 - 라일락 (시티팝 리믹스) IU - LILAC (Citypop remix)
+      .audio-info-box
+        .thumb-nail
+        .title 아이유 - 라일락 (시티팝 리믹스) IU - LILAC (Citypop remix)
 
-    
-    .audio-player-controls
-        .audio-progress
+      .audio-player-controls
+        .audio-progress.inner-box 
           .audio-progress-bar
           br
         #player-controls.player-controls
-          button#play-button
+          button#backward-button.btn
+            i.fa.fa-backward
+          button#play-button.btn
             i.fa.fa-play
-          button#pause-button
+          button#pause-button.btn
             i.fa.fa-pause
-          button#stop-button
-            i.fa.fa-stop
+          button#forward-button.btn
+            i.fa.fa-forward
           input#volume-slider(type='range', min='0', max='1', step='0.01', value='1')
 
-  #song-list.song-list
 
-  
+
+  #chart-modal.modal
+    .modal-content
+

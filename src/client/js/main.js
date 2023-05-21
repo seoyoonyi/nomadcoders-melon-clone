@@ -1,14 +1,17 @@
+//main.js
 import '../scss/styles.scss';
 
 import { getPopularSongs } from './api';
-import { playSong } from './play';
+import { playSong, togglePlayback } from './play';
+
+// Add the following code to handle the "chart" click event
+const chartOption = document.querySelector('.menu li.chart');
+const chartModal = document.querySelector('#chart-modal');
 
 const renderSongs = (songs) => {
-	console.log('songs', songs);
-
-	const songList = document.querySelector('#song-list');
-	if (!songList) return;
-	songList.innerHTML = '';
+	// const songList = document.querySelector('#song-list');
+	if (!chartModal) return;
+	chartModal.innerHTML = '';
 
 	songs.forEach((song) => {
 		const li = document.createElement('li');
@@ -17,12 +20,13 @@ const renderSongs = (songs) => {
 			<p>${song.title}</p>
 		`;
 		li.setAttribute('data-video-id', song.videoId);
-		songList.appendChild(li);
+		chartModal.appendChild(li);
 
 		li.addEventListener('click', (event) => {
 			const videoId = event.currentTarget.getAttribute('data-video-id');
 			if (videoId) {
 				playSong(`https://www.youtube.com/watch?v=${videoId}`);
+				togglePlayback();
 			}
 		});
 	});
@@ -30,4 +34,8 @@ const renderSongs = (songs) => {
 
 getPopularSongs().then((response) => {
 	renderSongs(response.data);
+});
+
+chartOption.addEventListener('click', () => {
+	chartModal.classList.add('show');
 });
