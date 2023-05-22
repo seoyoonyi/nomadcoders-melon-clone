@@ -5,6 +5,7 @@
 // Components
 @import './components/modal.scss';
 @import './components/play-modal.scss';
+@import './components/chart-modal.scss';
 
 // Screens
 
@@ -18,13 +19,11 @@ a {
 
 body {
 	font-family: $font-family-roboto;
+	// background: url('/public/bg_mobile.jpg') center no-repeat;
 }
 
 main {
-	height: 95vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+	height: 100vh;
 }
 
 .song-list {
@@ -58,4 +57,17 @@ main {
 
 .hidden {
 	display: none;
+}
+
+.icon-box {
+	position: absolute;
+	top: 50px;
+	left: 50px;
+	text-align: center;
+	text-transform: uppercase;
+	background-color: aqua;
+}
+
+.icon-box + .icon-box {
+	top: 170px;
 }

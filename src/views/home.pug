@@ -1,13 +1,22 @@
 extends base
 
 block content
+  .icon-box
+    .icon-img 
+      img(src='public/music.svg')
+    span.icon-txt music   
+  .icon-box
+    .icon-img 
+      img(src='public/user.svg')
+    span.icon-txt user  
+
 
   #player
-  .player-box.modal
-    .title-box
-      h1 Popular City Pop Songs
-      .window-box
-        button.window-close
+  #player-modal.player-modal.modal
+    #player-modal-header.modal-header
+      h1 Music
+      .icon-group
+        button#player-modal-close
           i.fa.fa-times-circle
 
     nav
@@ -43,6 +52,11 @@ block content
 
 
 
-  #chart-modal.modal
-    .modal-content
+  #chart-modal.modal.chart-modal
+    #chart-modal-header.modal-header
+      h1 Chart
+      .icon-group
+        button.modal-close#chart-modal-close
+          i.fa.fa-times-circle  
+    ul.chart-content.inner-box 
 

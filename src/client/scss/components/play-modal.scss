@@ -1,17 +1,15 @@
-.player-box nav .menu {
+.player-modal nav .menu {
 	padding: 6px 0 3px 9px;
 	display: flex;
 	font-size: 15px;
-	// border-bottom: 1px solid white;
 	text-transform: capitalize;
-	// text-decoration: underline;
 }
 
-.player-box nav .menu li {
+.player-modal nav .menu li {
 	cursor: pointer;
 }
 
-.player-box nav .menu li + li {
+.player-modal nav .menu li + li {
 	margin-left: 10px;
 }
 
@@ -20,19 +18,28 @@
 	padding: 14px 28px 0;
 }
 
-.player-box .audio-player {
+.player-modal .audio-player {
 	width: 300px;
 	height: 200px;
 	outline: none;
 }
 
-.player-box .audio-info-box .thumb-nail {
+.player-modal .audio-info-box .thumb-nail {
 	width: 100%;
 	height: 200px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
 	border: 1px solid white;
 }
 
-.player-box .audio-info-box .title {
+.player-modal .audio-info-box .thumb-nail img {
+	width: 100%;
+	height: auto;
+}
+
+.player-modal .audio-info-box .title {
 	margin-top: 12px;
 	word-break: keep-all;
 	text-align: center;
@@ -68,16 +75,6 @@
 	align-items: center;
 	height: 100px;
 }
-
-// button#play-button,
-// button#pause-button,
-// button#stop-button {
-// 	border: none;
-// 	border-radius: 5px;
-// 	margin: 0 10px;
-// 	padding: 10px;
-// 	cursor: pointer;
-// }
 
 button:hover i {
 	color: #acacac;
