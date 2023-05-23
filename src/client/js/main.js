@@ -41,7 +41,6 @@ const renderSongs = (songs) => {
 				playSong(`https://www.youtube.com/watch?v=${videoId}`);
 				togglePlayback();
 
-				// Update thumbnail and title in Music window
 				const thumbNailDiv = document.querySelector('.audio-info-box .thumb-nail');
 				const titleDiv = document.querySelector('.audio-info-box .title');
 				thumbNailDiv.innerHTML = `<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">`;

@@ -13,5 +13,8 @@
 		"semi": ["error", "always"],
 		"quotes": ["error", "single"],
 		"no-console": "warn"
+	},
+	"globals": {
+		"YT": "readonly"
 	}
 }

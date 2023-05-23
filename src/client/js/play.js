@@ -1,6 +1,9 @@
-/* eslint-disable no-undef */
+import { getPopularSongs } from './api';
+
 let player;
-let isPlaying = false; // Variable to track the playback state
+let isPlaying = false;
+let videoId;
+let lastVideoId;
 
 const audioPlayer = document.querySelector('#audio-player');
 const playButton = document.querySelector('#play-button');
@@ -9,16 +12,13 @@ const volumeSlider = document.querySelector('#volume-slider');
 const progressContainer = document.querySelector('.audio-progress');
 const progressBar = document.querySelector('.audio-progress-bar');
 
-let videoId;
-let lastVideoId;
-
 window.onYouTubeIframeAPIReady = () => {
 	player = new YT.Player('player', {
 		height: '0',
 		width: '0',
 		videoId,
 		playerVars: {
-			autoplay: 1,
+			autoplay: 0,
 			controls: 0,
 			modestbranding: 1,
 			playsinline: 1,
@@ -27,7 +27,9 @@ window.onYouTubeIframeAPIReady = () => {
 		},
 		events: {
 			onReady: (event) => {
-				onPlayerReady(event, videoId);
+				console.log('onReady', event.target);
+				event.target.playVideo();
+				event.target.mute();
 			},
 			onStateChange: onPlayerStateChange,
 		},
@@ -39,56 +41,30 @@ const getVideoId = (url) => {
 	return match ? match[1] : null;
 };
 
-export const playSong = (url) => {
+export const playSong = async (url) => {
 	videoId = getVideoId(url);
 	if (!videoId) return;
 
 	if (player) {
 		if (lastVideoId === videoId && player.getPlayerState() !== YT.PlayerState.ENDED) {
 			player.playVideo();
-			return;
+		} else {
+			player.loadVideoById({
+				videoId: videoId,
+				startSeconds: 0,
+			});
+			player.playVideo();
 		}
-		player.loadVideoById(videoId);
-	} else {
-		player = new YT.Player('player', {
-			height: '0',
-			width: '0',
-			videoId,
-			playerVars: {
-				autoplay: 1,
-				controls: 0,
-				modestbranding: 1,
-				playsinline: 1,
-				enablejsapi: 1,
-				disablekb: 1,
-			},
-			events: {
-				onReady: (event) => {
-					onPlayerReady(event, videoId);
-					togglePlayback();
-				},
-				onStateChange: onPlayerStateChange,
-			},
-		});
 	}
-};
-
-const onPlayerReady = (event, videoId) => {
-	event.target.playVideo();
-	lastVideoId = videoId;
-	playAudio(`https://www.youtube.com/watch?v=${videoId}`);
-	togglePlayback(); // Update the play/pause button state
 };
 
 const onPlayerStateChange = (event) => {
 	if (event.data === YT.PlayerState.PLAYING) {
-		progressBar.max = player.getDuration(); // Update from audioProgressBar to progressBar
+		progressBar.max = player.getDuration();
 		setInterval(() => updateProgressBar(player), 1000);
 	}
 	if (event.data === YT.PlayerState.ENDED) {
 		lastVideoId = null;
-		stopAudio();
-		togglePlayback(); // Update the play/pause button state
 	} else {
 		lastVideoId = videoId;
 	}
@@ -99,53 +75,6 @@ const updateProgressBar = (player) => {
 	const duration = player.getDuration();
 	const progressBarWidth = (currentTime / duration) * 100 + '%';
 	progressBar.style.width = progressBarWidth;
-};
-
-const updateProgressBarIndependently = () => {
-	progressBar.max = player.getDuration();
-	setInterval(() => updateProgressBar(player), 1000);
-};
-
-const playAudio = (url) => {
-	console.log(url);
-	audioPlayer.src = url;
-	audioPlayer.play();
-};
-
-const pauseAudio = () => {
-	if (!audioPlayer.paused) {
-		audioPlayer.pause();
-	}
-	if (player && player.getPlayerState() === YT.PlayerState.PLAYING) {
-		player.pauseVideo();
-	}
-};
-
-export const togglePlayback = () => {
-	console.log('isPlaying', isPlaying);
-	if (isPlaying) {
-		playButton.classList.add('hidden');
-		pauseButton.classList.remove('hidden');
-		if (!audioPlayer.paused) {
-			pauseAudio();
-		}
-		playAudio(`https://www.youtube.com/watch?v=${videoId}`);
-		updateProgressBarIndependently();
-	} else {
-		playButton.classList.remove('hidden');
-		pauseButton.classList.add('hidden');
-		pauseAudio();
-	}
-	isPlaying = !isPlaying;
-};
-
-export const restartPlayback = () => {
-	if (player) {
-		player.playVideo();
-		playAudio(`https://www.youtube.com/watch?v=${videoId}`);
-		updateProgressBarIndependently();
-		togglePlayback();
-	}
 };
 
 export const setVolume = (volume) => {
@@ -163,7 +92,79 @@ export const setVolume = (volume) => {
 	}
 };
 
-playButton.addEventListener('click', () => {
+export const togglePlayback = () => {
+	if (isPlaying) {
+		pauseButton.classList.add('hidden');
+		playButton.classList.remove('hidden');
+		pauseAudio();
+	} else {
+		playButton.classList.add('hidden');
+		pauseButton.classList.remove('hidden');
+		if (lastVideoId === videoId && player.getPlayerState() !== YT.PlayerState.ENDED) {
+			player.playVideo();
+		} else {
+			playSong(`https://www.youtube.com/watch?v=${videoId}`);
+		}
+	}
+	isPlaying = !isPlaying;
+};
+
+const pauseAudio = () => {
+	if (!audioPlayer.paused) {
+		audioPlayer.pause();
+	}
+	if (player && player.getPlayerState() === YT.PlayerState.PLAYING) {
+		player.pauseVideo();
+	}
+};
+
+export const playAudio = (url) => {
+	audioPlayer.src = url;
+	audioPlayer.play();
+};
+
+export const restartPlayback = () => {
+	if (player) {
+		const currentTime = player.getCurrentTime(); // 현재 재생 시간 가져오기
+		player.loadVideoById({
+			videoId: videoId,
+			startSeconds: currentTime, // 현재 재생 시간으로 시작 시간 설정
+		});
+		player.unMute();
+		player.playVideo();
+		togglePlayback();
+	}
+};
+
+window.addEventListener('DOMContentLoaded', async () => {
+	const popularSongs = await getPopularSongs();
+
+	const firstSong = popularSongs.data[0];
+	const { title, thumbnail, videoId } = firstSong;
+
+	playSong(`https://www.youtube.com/watch?v=${videoId}`);
+
+	const titleElement = document.querySelector('.audio-info-box .title');
+	const thumbnailElement = document.querySelector('.audio-info-box .thumb-nail');
+
+	const thumbnailImg = document.createElement('img');
+	thumbnailElement.appendChild(thumbnailImg);
+
+	titleElement.textContent = title;
+	thumbnailImg.src = thumbnail;
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+	if (isPlaying) {
+		pauseButton.classList.remove('hidden');
+		playButton.classList.add('hidden');
+	} else {
+		pauseButton.classList.add('hidden');
+		playButton.classList.remove('hidden');
+	}
+});
+
+playButton.addEventListener('click', function () {
 	restartPlayback();
 });
 
@@ -182,15 +183,4 @@ progressContainer.addEventListener('click', (event) => {
 	const progressBarWidth = (clickedX / progressContainerWidth) * 100;
 	const seekTime = (progressBarWidth / 100) * player.getDuration();
 	player.seekTo(seekTime, true);
-});
-
-// Restore play/pause button state upon page reload
-window.addEventListener('DOMContentLoaded', () => {
-	if (isPlaying) {
-		pauseButton.classList.remove('hidden');
-		playButton.classList.add('hidden');
-	} else {
-		pauseButton.classList.add('hidden');
-		playButton.classList.remove('hidden');
-	}
 });
