@@ -1,14 +1,16 @@
 # fly.toml
 
-app = "your-app-name"
+app = "happymusic"
+primary_region = "nrt"
 
 [[services]]
-  internal_port = 8080
   protocol = "tcp"
-
-  [services.concurrency]
-    hard_limit = 25
-    soft_limit = 20
+  internal_port = 4000
 
   [[services.ports]]
     handlers = ["http"]
+    port = 80  
+
+[services.concurrency]
+  hard_limit = 25
+  soft_limit = 20
