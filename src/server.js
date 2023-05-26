@@ -10,6 +10,7 @@ import chartRouter from './routers/chartRouter';
 import userRouter from './routers/userRouter';
 import { viewsRouter } from './routers/viewRouter';
 import songRouter from './routers/songRouter';
+import mongoose from 'mongoose';
 
 const app = express();
 const logger = morgan('dev');
@@ -65,8 +66,8 @@ app.use('/api/song', songRouter);
 
 app.use('/', viewsRouter);
 
-app.listen(3000, () => {
-	console.log('Server started on port 3000');
+app.listen(process.env.PORT || 3000, '0.0.0.0', () => {
+	mongoose.connect(process.env.DB_URL);
 });
 
 export default app;
