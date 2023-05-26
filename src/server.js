@@ -31,15 +31,18 @@ const corsOptions = {
 		}
 	},
 };
-
 const store = MongoStore.create({
-	clientPromise: mongoose.connect(process.env.DB_URL, {
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-		useFindAndModify: false,
-		useCreateIndex: true,
-	}),
+	mongoUrl: process.env.DB_URL,
+	collectionName: 'sessions', // Optional, default is 'sessions'
 });
+// const store = MongoStore.create({
+// 	clientPromise: mongoose.connect(process.env.DB_URL, {
+// 		useNewUrlParser: true,
+// 		useUnifiedTopology: true,
+// 		useFindAndModify: false,
+// 		useCreateIndex: true,
+// 	}),
+// });
 
 app.set('view engine', 'pug');
 app.set('views', process.cwd() + '/src/views');
