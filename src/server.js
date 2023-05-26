@@ -31,6 +31,12 @@ const corsOptions = {
 	},
 };
 
+const dbURL = process.env.DB_URL;
+
+const store = MongoStore.create({
+	mongoUrl: dbURL,
+});
+
 app.set('view engine', 'pug');
 app.set('views', process.cwd() + '/src/views');
 
@@ -38,14 +44,16 @@ app.use(cors(corsOptions));
 app.use(logger);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
 app.use(
 	session({
 		secret: process.env.COOKIE_SECRET,
 		resave: false,
 		saveUninitialized: false,
-		store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
+		store: store,
 	}),
 );
+
 app.use(flash());
 app.use(localsMiddleware);
 
@@ -60,5 +68,9 @@ app.use('/api/user', userRouter);
 app.use('/api/song', songRouter);
 
 app.use('/', viewsRouter);
+
+app.listen(3000, () => {
+	console.log('Server started on port 3000');
+});
 
 export default app;
