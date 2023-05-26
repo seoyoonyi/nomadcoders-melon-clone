@@ -10,6 +10,7 @@ import chartRouter from './routers/chartRouter';
 import userRouter from './routers/userRouter';
 import { viewsRouter } from './routers/viewRouter';
 import songRouter from './routers/songRouter';
+import mongoose from 'mongoose';
 
 const app = express();
 const logger = morgan('dev');
@@ -31,10 +32,13 @@ const corsOptions = {
 	},
 };
 
-const dbURL = process.env.DB_URL;
-
 const store = MongoStore.create({
-	mongoUrl: dbURL,
+	clientPromise: mongoose.connect(process.env.DB_URL, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+		useFindAndModify: false,
+		useCreateIndex: true,
+	}),
 });
 
 app.set('view engine', 'pug');
