@@ -10,7 +10,6 @@ import chartRouter from './routers/chartRouter';
 import userRouter from './routers/userRouter';
 import { viewsRouter } from './routers/viewRouter';
 import songRouter from './routers/songRouter';
-import mongoose from 'mongoose';
 
 const app = express();
 const logger = morgan('dev');
