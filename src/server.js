@@ -73,7 +73,7 @@ app.use('/api/song', songRouter);
 
 app.use('/', viewsRouter);
 
-app.listen(4000, () => {
+app.listen(3000, () => {
 	console.log('Server started on port 3000');
 });
 
