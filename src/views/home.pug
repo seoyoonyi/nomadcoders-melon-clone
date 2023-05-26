@@ -1,11 +1,11 @@
 extends base
 
 block content
-  .icon-box
+  .icon-box.music
     .icon-img 
       img(src='public/music.svg')
     span.icon-txt music   
-  .icon-box
+  .icon-box.user
     .icon-img 
       img(src='public/user.svg')
     span.icon-txt user  
@@ -33,25 +33,28 @@ block content
 
       .audio-info-box
         .thumb-nail
-        .title 아이유 - 라일락 (시티팝 리믹스) IU - LILAC (Citypop remix)
+        .title 로딩중...
 
       .audio-player-controls
         .audio-progress.inner-box 
           .audio-progress-bar
           br
         #player-controls.player-controls
-          button#backward-button.btn
-            i.fa.fa-backward
-          button#play-button.btn
-            i.fa.fa-play
-          button#pause-button.btn
-            i.fa.fa-pause
-          button#forward-button.btn
-            i.fa.fa-forward
-          input#volume-slider(type='range', min='0', max='1', step='0.01', value='1')
+          .player-group
+            button#backward-button.btn
+              i.fa.fa-backward
+            button#play-button.btn
+              i.fa.fa-play
+            button#pause-button.btn
+              i.fa.fa-pause
+            button#forward-button.btn
+              i.fa.fa-forward
+          .volume-box                
+            span 🔈
+            input#volume-slider(type='range', min='0', max='1', step='0.01', value='1').inner-box 
 
 
-
+  // 차트 모달창
   #chart-modal.modal.chart-modal
     #chart-modal-header.modal-header
       h1 Chart
@@ -60,3 +63,56 @@ block content
           i.fa.fa-times-circle  
     ul.chart-content.inner-box 
 
+  // 로그인 모달창
+  #login-modal.modal.login-modal      
+    #login-modal-header.modal-header
+      h1 Log In
+      .icon-group
+        button.modal-close#login-modal-close
+          i.fa.fa-times-circle        
+    form( method="post")#login-form
+        label(for="email") 이메일:
+        input(type="email", id="email", name="email", required)
+        label(for="password") 비밀번호:
+        input(type="password", id="password", name="password", required)
+        input(type="submit", value="로그인")
+    p 아직 계정이 없으신가요?
+    button.btn-open-register(type="button") 회원가입
+
+  // 회원가입 모달창
+  #register-modal.modal.register-modal      
+    #register-modal-header.modal-header
+      h1 Register
+      .icon-group
+        button.modal-close#register-modal-close
+          i.fa.fa-times-circle            
+    form(method="post")#register-form
+        label(for="email") 이메일:
+        input(type="email", id="email", name="email", required)
+        label(for="password") 비밀번호:
+        input(type="password", id="password", name="password", required)
+        button(type="submit", value="회원가입") 회원가입
+    p 이미 계정이 있으신가요?
+    button.btn-open-login(type="button") 로그인
+
+
+    // 로그아웃 모달창
+  #logout-modal.modal.logout-modal      
+    #logout-modal-header.modal-header
+      h1 Log Out
+      .icon-group
+        button.modal-close#logout-modal-close
+          i.fa.fa-times-circle        
+    p 로그아웃 하시겠습니까?
+    button.btn-logout-confirm(type="button") 로그아웃
+
+
+
+  // 플레이리스트 모달창
+  #playlist-modal.modal.playlist-modal
+    #playlist-modal-header.modal-header
+      h1 playlist
+      .icon-group
+        button.modal-close#playlist-modal-close
+          i.fa.fa-times-circle  
+    ul.playlist-content.inner-box 

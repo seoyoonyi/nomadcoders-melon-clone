@@ -17,6 +17,11 @@ module.exports = {
 		path: path.resolve(__dirname, 'assets'),
 		clean: true,
 	},
+	resolve: {
+		alias: {
+			'@public': path.resolve(__dirname, 'public'),
+		},
+	},
 	module: {
 		rules: [
 			{
@@ -31,6 +36,19 @@ module.exports = {
 			{
 				test: /\.scss$/,
 				use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+			},
+			{
+				test: /\.(png|jpe?g|gif|svg)$/i,
+				use: [
+					{
+						loader: 'file-loader',
+						options: {
+							name: '[path][name].[ext]',
+							outputPath: '/',
+							publicPath: '/',
+						},
+					},
+				],
 			},
 		],
 	},

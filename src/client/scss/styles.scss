@@ -6,6 +6,7 @@
 @import './components/modal.scss';
 @import './components/play-modal.scss';
 @import './components/chart-modal.scss';
+@import './components/playlist-modal.scss';
 
 // Screens
 
@@ -18,12 +19,26 @@ a {
 }
 
 body {
+	width: 100%;
+	height: 100%;
 	font-family: $font-family-roboto;
-	// background: url('/public/bg_mobile.jpg') center no-repeat;
+	background-image: url('@public/bg_mobile.jpg');
+	background-size: cover;
+
+	@media (min-width: 768px) {
+		background-image: url('@public/bg_desktop.jpg');
+	}
 }
 
 main {
 	height: 100vh;
+}
+
+#login-modal,
+#register-modal,
+#logout-modal,
+#playlist-modal {
+	display: none;
 }
 
 .song-list {
@@ -65,7 +80,11 @@ main {
 	left: 50px;
 	text-align: center;
 	text-transform: uppercase;
-	background-color: aqua;
+
+	@media (min-width: 768px) {
+		left: initial;
+		right: 50px;
+	}
 }
 
 .icon-box + .icon-box {

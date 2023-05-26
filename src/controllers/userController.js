@@ -1,22 +1,9 @@
 import { User } from '../models/User';
 import dotenv from 'dotenv';
 import JWTAuth from '../utils/jwt';
-// import path from 'path';
 
 dotenv.config();
 const jwtAuth = new JWTAuth();
-
-export const login = async (req, res) => {
-	return res.render('login', { pageTitle: 'Log In' });
-};
-
-// export const goLogin = async (req, res) => {
-// 	return res.sendFile(path.join(__dirname, '/views/login.pug'));
-// };
-
-export const register = async (req, res) => {
-	return res.render('register', { pageTitle: 'Register' });
-};
 
 export const getAllUser = async (req, res) => {
 	try {
@@ -38,9 +25,8 @@ export const loginUser = async (req, res) => {
 		}
 
 		const token = jwtAuth.generateToken(foundUser); // 로그인 후 토큰 생성
-
-		res.cookie('token', token, { httpOnly: true }); // 쿠키에 토큰 저장
-		res.redirect('/');
+		res.json({ userEmail, userPassword, token });
+		// res.cookie('token', token, { httpOnly: true }); // 쿠키에 토큰 저장
 	} catch (error) {
 		console.error(error);
 		res.status(500).send('서버 에러');

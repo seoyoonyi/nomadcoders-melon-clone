@@ -15,7 +15,7 @@ export const findChart = async (req, res) => {
 		// const searchResponse = await axios.get(
 		// 	`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=CityPop&type=video&key=${API_KEY}&order=viewCount`,
 		// );
-		const searchResponse = await axios.get(apiUrl);
+		const searchResponse = await axios.get(apiUrl, { credentials: true });
 
 		const videos = searchResponse.data.items;
 		// console.log('videos', videos.id.videoId);
@@ -38,6 +38,7 @@ export const findChart = async (req, res) => {
 			};
 		});
 		const updatedVideos = await Promise.all(videoDetailsPromises);
+
 		res.json(updatedVideos);
 	} catch (error) {
 		console.error('sss', error);

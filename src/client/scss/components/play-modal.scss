@@ -59,21 +59,31 @@
 
 .audio-progress {
 	margin-top: 16px;
-	height: 4px;
+	height: 5px;
 }
 
 .audio-progress-bar {
 	height: 100%;
-	background-color: #ff0000;
+	background-color: black;
 	width: 0;
 	transition: width 0.5s ease;
 }
 
 .player-controls {
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
 	height: 100px;
+}
+.player-controls .player-group button {
+	width: 51px;
+}
+.player-controls .player-group button:nth-child(2) {
+	width: 57px;
+}
+
+.player-controls > button {
+	width: 57px;
 }
 
 button:hover i {
@@ -81,7 +91,28 @@ button:hover i {
 }
 
 input[type='range'] {
-	width: 200px;
-	height: 10px;
-	margin: 0 10px;
+	-webkit-appearance: none;
+}
+
+input[type='range']::-webkit-slider-thumb {
+	-webkit-appearance: none;
+}
+
+input[type='range'] {
+	width: 95px;
+	height: 5px;
+	margin-left: 3px;
+}
+
+input[type='range']::-webkit-slider-thumb {
+	height: 22px;
+	width: 10px;
+	cursor: pointer;
+	border: 1px solid;
+	border-bottom-color: gray;
+	border-right-color: gray;
+	border-top-color: #fff;
+	border-left-color: #fff;
+	background-color: #e6e6e6;
+	box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
 }
