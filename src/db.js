@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 import 'dotenv/config';
 
+if (process.env.NODE_ENV !== 'production') {
+	require('dotenv').config();
+}
+
 mongoose.connect(process.env.DB_URL, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
