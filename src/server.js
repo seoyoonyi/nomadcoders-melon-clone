@@ -64,16 +64,4 @@ app.use('/api/song', songRouter);
 
 app.use('/', viewsRouter);
 
-app.listen(process.env.PORT, '0.0.0.0', async () => {
-	try {
-		await mongoose.connect(process.env.DB_URL, {
-			useNewUrlParser: true,
-			useUnifiedTopology: true,
-		});
-		console.log('Connected to MongoDB successfully');
-	} catch (error) {
-		console.log('Failed to connect to MongoDB:', error);
-	}
-});
-
 export default app;
