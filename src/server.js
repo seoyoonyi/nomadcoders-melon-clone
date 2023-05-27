@@ -64,7 +64,7 @@ app.use('/api/song', songRouter);
 
 app.use('/', viewsRouter);
 
-app.listen(process.env.PORT || 3000, '0.0.0.0', async () => {
+app.listen(process.env.PORT, '0.0.0.0', async () => {
 	try {
 		await mongoose.connect(process.env.DB_URL, {
 			useNewUrlParser: true,
