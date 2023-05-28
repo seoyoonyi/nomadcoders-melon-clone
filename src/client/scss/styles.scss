@@ -1,18 +1,11 @@
-// Config
-@import './config/_variables.scss';
-@import './config/_reset.scss';
+@import './config/_variables';
+@import './config/_reset';
 
-// Components
-@import './components/modal.scss';
-@import './components/play-modal.scss';
-@import './components/chart-modal.scss';
-@import './components/playlist-modal.scss';
+@import './components/modal';
+@import './components/play-modal';
+@import './components/chart-modal';
+@import './components/playlist-modal';
 
-// Screens
-
-// Example: @import "./screens/search.scss";
-
-// Defaults
 a {
 	color: inherit;
 	text-decoration: none;

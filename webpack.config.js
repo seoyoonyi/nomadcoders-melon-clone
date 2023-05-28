@@ -7,6 +7,7 @@ module.exports = {
 	entry: {
 		main: BASE_JS + 'main.js',
 	},
+	devtool: 'source-map',
 	plugins: [
 		new MiniCssExtractPlugin({
 			filename: 'css/styles.css',
@@ -35,7 +36,21 @@ module.exports = {
 			},
 			{
 				test: /\.scss$/,
-				use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+				use: [
+					'style-loader',
+					{
+						loader: 'css-loader',
+						options: {
+							sourceMap: true,
+						},
+					},
+					{
+						loader: 'sass-loader',
+						options: {
+							sourceMap: true,
+						},
+					},
+				],
 			},
 			{
 				test: /\.(png|jpe?g|gif|svg)$/i,
