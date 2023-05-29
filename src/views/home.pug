@@ -69,15 +69,27 @@ block content
       h1 Log In
       .icon-group
         button.modal-close#login-modal-close
-          i.fa.fa-times-circle        
-    form( method="post")#login-form
-        label(for="email") 이메일:
-        input(type="email", id="email", name="email", required)
-        label(for="password") 비밀번호:
-        input(type="password", id="password", name="password", required)
-        input(type="submit", value="로그인")
-    p 아직 계정이 없으신가요?
-    button.btn-open-register(type="button") 회원가입
+          i.fa.fa-times-circle
+    .login-box
+      .login-img-box
+        img(src="public/login_icon.png")        
+      form( method="post")#login-form.login-form
+          .email-box
+            label(for="email")
+              u e
+              span mail: 
+            input(type="email", id="email", name="email", required).inner-box
+          .password-box
+            label(for="password")
+              u p
+              span assword: 
+            input(type="password", id="password", name="password", required).inner-box
+          button(type="submit", value="로그인").btn 로그인
+    .register-induce-box
+      p 아직 계정이 없으신가요?
+      button.btn-open-register(type="button") 회원가입
+
+
 
   // 회원가입 모달창
   #register-modal.modal.register-modal      
@@ -85,15 +97,26 @@ block content
       h1 Register
       .icon-group
         button.modal-close#register-modal-close
-          i.fa.fa-times-circle            
-    form(method="post")#register-form
-        label(for="email") 이메일:
-        input(type="email", id="email", name="email", required)
-        label(for="password") 비밀번호:
-        input(type="password", id="password", name="password", required)
-        button(type="submit", value="회원가입") 회원가입
-    p 이미 계정이 있으신가요?
-    button.btn-open-login(type="button") 로그인
+          i.fa.fa-times-circle
+    .register-box
+      .register-img-box
+        img(src="public/register_icon.png")        
+      form( method="post")#register-form.register-form
+          .email-box
+            label(for="email")
+              u e
+              span mail: 
+            input(type="email", id="email", name="email", required).inner-box
+          .password-box
+            label(for="password")
+              u p
+              span assword: 
+            input(type="password", id="password", name="password", required).inner-box
+          button(type="submit", value="회원가입").btn 회원가입
+    .login-induce-box
+      p 이미 계정이 있으신가요?
+      button.btn-open-login(type="button") 로그인
+  
 
 
     // 로그아웃 모달창

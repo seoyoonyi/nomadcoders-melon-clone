@@ -5,10 +5,17 @@
 @import './components/play-modal';
 @import './components/chart-modal';
 @import './components/playlist-modal';
+@import './components/login-modal';
+@import './components/register-modal';
 
 a {
 	color: inherit;
 	text-decoration: none;
+}
+
+button {
+	border: none;
+	background-color: transparent;
 }
 
 body {

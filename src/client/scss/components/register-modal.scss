@@ -1,22 +1,22 @@
-.login-modal {
+.register-modal {
 	width: 380px;
 	// position: relative;
 	.modal-header {
 		width: 100%;
 	}
-	.login-box {
+	.register-box {
 		margin: 21px 0 42px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		gap: 21px;
-		.login-img-box {
+		.register-img-box {
 			width: 68px;
 			img {
 				width: 100%;
 			}
 		}
-		.login-form {
+		.register-form {
 			display: flex;
 			flex-direction: column;
 			gap: 6px;
@@ -40,7 +40,6 @@
 				border-color: #000;
 				box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(0, 0, 0, 0.2);
 			}
-
 			button {
 				position: absolute;
 				top: 50%;
@@ -51,7 +50,7 @@
 			}
 		}
 	}
-	.register-induce-box {
+	.login-induce-box {
 		margin-bottom: 21px;
 		width: 100%;
 		display: flex;
@@ -61,7 +60,7 @@
 		font-family: $font-family-pretendard;
 		color: #777;
 
-		.btn-open-register {
+		.btn-open-login {
 			font-size: 14px;
 			font-family: $font-family-pretendard;
 			color: #777;

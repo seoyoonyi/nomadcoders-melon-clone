@@ -32,10 +32,12 @@ const renderSongs = (songs) => {
 
 		li.innerHTML = `
 			<span>${chartRank[index]}</span>
-			<div>
-				<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">
+			<div class="song-box">
+				<div class="song-img-box">
+					<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">
+				</div>
+				<p>${songTitle}</p>
 			</div>
-			<p>${songTitle}</p>
 			<button id="heart-button" class="btn">
 				<i class="fa fa-heart"></i>
 			</button>
@@ -139,6 +141,7 @@ export const makeShowable = (showButtonSelector, windowSelector) => {
 
 	showButton.addEventListener('click', () => {
 		window.style.display = 'block';
+		bringToFront(windowSelector);
 	});
 };
 
@@ -183,7 +186,10 @@ makeShowable('.btn-open-register', '#register-modal');
 isLoggedIn
 	? makeShowable('.icon-box.user', '#logout-modal')
 	: makeShowable('.icon-box.user', '#login-modal');
-// makeShowable('.menu li.playlist', '#playlist-modal');
+
+isLoggedIn
+	? makeShowable('.menu li.playlist', '#playlist-modal')
+	: makeShowable('.menu li.playlist', '#login-modal');
 
 makeClosable('#player-modal-close', '#player-modal');
 makeClosable('#chart-modal-close', '#chart-modal');

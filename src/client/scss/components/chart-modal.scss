@@ -2,51 +2,59 @@
 	z-index: 99;
 	position: absolute;
 	width: 400px;
-}
 
-.chart-modal .modal-header {
-	width: 100%;
-}
+	.modal-header {
+		width: 100%;
+	}
 
-.chart-modal li {
-	width: 100%;
-	display: flex;
-	align-items: center;
-	padding: 9px 0;
-	border-bottom: 1px dotted #e9e9e9;
-	cursor: pointer;
-	// justify-content: center;
-}
+	li {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 9px 0;
+		border-bottom: 1px dotted #e9e9e9;
+		cursor: pointer;
+		// justify-content: center;
 
-.chart-modal li span {
-	margin-left: 12px;
-	margin-right: 12px;
-	// font-size: 13px;
-}
+		span {
+			margin-left: 12px;
+			margin-right: 12px;
+			// font-size: 13px;
+		}
 
-.chart-modal li div {
-	width: 82px;
-	height: 46px;
-	flex-shrink: 0;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-right: 9px;
-	overflow: hidden;
-}
+		.song-box {
+			display: flex;
+			.song-img-box {
+				width: 82px;
+				height: 46px;
+				flex-shrink: 0;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin-right: 9px;
+				overflow: hidden;
+				img {
+					width: 100%;
+					height: auto;
+				}
+			}
 
-.chart-modal li div img {
-	width: 100%;
-	height: auto;
-}
-.chart-modal li p {
-	font-weight: 500;
-	font-family: $font-family-pretendard;
-}
+			p {
+				font-weight: 500;
+				font-family: $font-family-pretendard;
+			}
+		}
 
-.chart-modal .chart-content {
-	height: 450px;
-	margin: 4px;
-	background-color: white;
-	overflow-y: scroll;
+		button {
+			margin-right: 12px;
+		}
+	}
+
+	.chart-content {
+		height: 450px;
+		margin: 4px;
+		background-color: white;
+		overflow-y: scroll;
+	}
 }
