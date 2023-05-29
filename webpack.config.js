@@ -1,5 +1,6 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
+const webpack = require('webpack');
 
 const BASE_JS = './src/client/js/';
 
@@ -12,6 +13,7 @@ module.exports = {
 		new MiniCssExtractPlugin({
 			filename: 'css/styles.css',
 		}),
+		new webpack.EnvironmentPlugin(['NODE_ENV']),
 	],
 	output: {
 		filename: 'js/[name].js',
