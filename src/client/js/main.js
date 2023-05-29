@@ -1,7 +1,7 @@
 //main.js
 import '../scss/styles.scss';
 
-import { getPopularSongs } from './play';
+import { getPopularSongs, player } from './play';
 import { playSong, togglePlayback } from './play';
 import { addSong, getSongs } from './song';
 import { isLoggedIn } from './user';
@@ -38,29 +38,20 @@ const renderSongs = (songs) => {
 				</div>
 				<p>${songTitle}</p>
 			</div>
-			<button id="heart-button" class="btn">
-				<i class="fa fa-heart"></i>
-			</button>
-		
+			<div class="button-box">
+				<button id="play-button" class="btn play-button">
+					<i class="fa fa-play"></i>
+				</button>			
+				<button id="heart-button" class="btn heart-button">
+					<i class="fa fa-heart"></i>
+				</button>
+			</div>
 		`;
 		li.setAttribute('data-video-id', song.videoId);
 		chartContent.appendChild(li);
 
-		const heartButton = document.querySelector('#heart-button');
-		heartButton.addEventListener('click', () => {
-			if (!isLoggedIn) {
-				// 사용자가 로그인하지 않았다면
-				const loginModal = document.querySelector('#login-modal');
-				loginModal.style.display = 'block'; // 로그인 모달창을 보여줍니다.
-			} else {
-				// 찜한 곡 추가
-				addSong({
-					title: songTitle,
-					thumbnail: song.thumbnail,
-					videoId: song.videoId,
-				});
-			}
-		});
+		const heartChartButton = li.querySelector('.button-box .heart-button');
+		const playChartButton = li.querySelector('.button-box .play-button');
 
 		li.addEventListener('dblclick', (event) => {
 			const videoId = event.currentTarget.getAttribute('data-video-id');
@@ -73,7 +64,42 @@ const renderSongs = (songs) => {
 				thumbNailDiv.innerHTML = `<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">`;
 				titleDiv.textContent = songTitle;
 			}
+			togglePlayback(); // 음악이 이미 재생 중이라면 이 함수가 일시 정지를 수행합니다.
+			player.unMute();
 			bringToFront('#player-modal');
+		});
+
+		playChartButton.addEventListener('click', () => {
+			const videoId = li.getAttribute('data-video-id');
+			if (videoId) {
+				playSong(`https://www.youtube.com/watch?v=${videoId}`);
+				togglePlayback();
+
+				const thumbNailDiv = document.querySelector('.audio-info-box .thumb-nail');
+				const titleDiv = document.querySelector('.audio-info-box .title');
+				thumbNailDiv.innerHTML = `<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">`;
+				titleDiv.textContent = songTitle;
+			}
+			togglePlayback(); // 음악이 이미 재생 중이라면 이 함수가 일시 정지를 수행합니다.
+			player.unMute();
+			bringToFront('#player-modal');
+		});
+
+		heartChartButton.addEventListener('click', () => {
+			const loginModal = document.querySelector('#login-modal');
+			loginModal.style.display = 'block';
+			bringToFront('#login-modal');
+
+			if (isLoggedIn) {
+				const playlistModal = document.querySelector('#playlist-modal');
+				playlistModal.style.display = 'block';
+				bringToFront('#playlist-modal');
+				addSong({
+					title: songTitle,
+					thumbnail: song.thumbnail,
+					videoId: song.videoId,
+				});
+			}
 		});
 	});
 };
@@ -145,7 +171,7 @@ export const makeShowable = (showButtonSelector, windowSelector) => {
 	});
 };
 
-const bringToFront = (windowSelector) => {
+export const bringToFront = (windowSelector) => {
 	const window = document.querySelector(windowSelector);
 	window.style.zIndex = ++zIndex;
 };

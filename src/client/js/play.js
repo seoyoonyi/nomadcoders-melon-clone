@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { API_URL } from './api';
+import { isLoggedIn } from './user';
+import { bringToFront } from './main';
 
-let player;
+export let player;
 let isPlaying = false;
 let videoId;
 let lastVideoId;
@@ -12,6 +14,8 @@ const pauseButton = document.querySelector('#pause-button');
 const volumeSlider = document.querySelector('#volume-slider');
 const progressContainer = document.querySelector('.audio-progress');
 const progressBar = document.querySelector('.audio-progress-bar');
+const backwardButton = document.querySelector('#backward-button');
+const forwardButton = document.querySelector('#forward-button');
 
 window.onYouTubeIframeAPIReady = () => {
 	player = new YT.Player('player', {
@@ -59,12 +63,14 @@ export const playSong = async (url) => {
 	if (player) {
 		if (lastVideoId === videoId && player.getPlayerState() !== YT.PlayerState.ENDED) {
 			player.playVideo();
+			isPlaying = true; // 여기에 isPlaying을 true로 업데이트 해줍니다.
 		} else {
 			player.loadVideoById({
 				videoId: videoId,
 				startSeconds: 0,
 			});
 			player.playVideo();
+			isPlaying = true; // 여기에 isPlaying을 true로 업데이트 해줍니다.
 		}
 	}
 };
@@ -103,21 +109,12 @@ export const setVolume = (volume) => {
 	}
 };
 
-export const togglePlayback = () => {
-	if (isPlaying) {
-		pauseButton.classList.add('hidden');
-		playButton.classList.remove('hidden');
-		pauseAudio();
-	} else {
-		playButton.classList.add('hidden');
-		pauseButton.classList.remove('hidden');
-		if (lastVideoId === videoId && player.getPlayerState() !== YT.PlayerState.ENDED) {
-			player.playVideo();
-		} else {
-			playSong(`https://www.youtube.com/watch?v=${videoId}`);
-		}
-	}
-	isPlaying = !isPlaying;
+export const playAudio = (url) => {
+	audioPlayer.src = url;
+	audioPlayer.play();
+	isPlaying = true; // 재생을 시작하면서 isPlaying을 true로 설정합니다.
+	pauseButton.classList.remove('hidden'); // 재생을 시작하면서 일시 중지 버튼을 보여줍니다.
+	playButton.classList.add('hidden'); // 재생을 시작하면서 재생 버튼을 숨깁니다.
 };
 
 const pauseAudio = () => {
@@ -127,11 +124,24 @@ const pauseAudio = () => {
 	if (player && player.getPlayerState() === YT.PlayerState.PLAYING) {
 		player.pauseVideo();
 	}
+	isPlaying = false; // 재생을 일시 중지하면서 isPlaying을 false로 설정합니다.
+	playButton.classList.remove('hidden'); // 재생을 일시 중지하면서 재생 버튼을 보여줍니다.
+	pauseButton.classList.add('hidden'); // 재생을 일시 중지하면서 일시 중지 버튼을 숨깁니다.
 };
 
-export const playAudio = (url) => {
-	audioPlayer.src = url;
-	audioPlayer.play();
+export const togglePlayback = () => {
+	if (isPlaying) {
+		pauseAudio();
+	} else {
+		if (lastVideoId === videoId && player.getPlayerState() !== YT.PlayerState.ENDED) {
+			player.playVideo();
+			player.unMute(); // 재생을 시작하면서 음소거를 해제합니다.
+		} else {
+			playSong(`https://www.youtube.com/watch?v=${videoId}`);
+			player.unMute(); // 재생을 시작하면서 음소거를 해제합니다.
+		}
+		playAudio(audioPlayer.src);
+	}
 };
 
 export const restartPlayback = () => {
@@ -143,7 +153,7 @@ export const restartPlayback = () => {
 		});
 		player.unMute();
 		player.playVideo();
-		togglePlayback();
+		playAudio(audioPlayer.src);
 	}
 };
 
@@ -194,4 +204,22 @@ progressContainer.addEventListener('click', (event) => {
 	const progressBarWidth = (clickedX / progressContainerWidth) * 100;
 	const seekTime = (progressBarWidth / 100) * player.getDuration();
 	player.seekTo(seekTime, true);
+});
+
+backwardButton.addEventListener('click', () => {
+	if (!isLoggedIn) {
+		alert('로그인 후 이용 가능합니다.');
+		const loginModal = document.querySelector('#login-modal');
+		loginModal.style.display = 'block';
+		bringToFront('#login-modal');
+	}
+});
+
+forwardButton.addEventListener('click', () => {
+	if (!isLoggedIn) {
+		alert('로그인 후 이용 가능합니다.');
+		const loginModal = document.querySelector('#login-modal');
+		loginModal.style.display = 'block';
+		bringToFront('#login-modal');
+	}
 });

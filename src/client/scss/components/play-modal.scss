@@ -78,7 +78,11 @@
 .player-controls .player-group button {
 	width: 51px;
 }
-.player-controls .player-group button:nth-child(2) {
+.player-controls .player-group button.play-button {
+	width: 57px;
+}
+
+.player-controls .player-group button.pause-button {
 	width: 57px;
 }
 
