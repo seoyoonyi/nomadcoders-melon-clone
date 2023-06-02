@@ -37,7 +37,18 @@ export const loginUser = async (req, res) => {
 
 export const registerUser = async (req, res) => {
 	const { email, password } = req.body;
-	console.log('email', email);
+
+	if (!email || !password) {
+		return res
+			.status(400)
+			.json({ success: false, message: '이메일 또는 비밀번호가 누락됬습니다.' });
+	}
+
+	const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+	if (!emailRegex.test(email)) {
+		return res.status(400).json({ success: false, message: '유효하지 않은 이메일 형식입니다.' });
+	}
+
 	try {
 		const user = await User.findOne({ email });
 
@@ -50,6 +61,7 @@ export const registerUser = async (req, res) => {
 			email,
 			password,
 		});
+
 		if (!newUser) {
 			return res.status(500).json({ success: false, message: 'Error creating user.' });
 		}
