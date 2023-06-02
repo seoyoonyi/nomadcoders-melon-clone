@@ -13,23 +13,8 @@ import songRouter from './routers/songRouter';
 
 const app = express();
 const logger = morgan('dev');
-const whitelist = [
-	'https://www.youtube.com',
-	'http://localhost:4000',
-	'http://localhost:4000/api/chart',
-	'https://googleads.g.doubleclick.net',
-];
-
 const corsOptions = {
-	origin: function (origin, callback) {
-		// origin이 undefined이거나 whitelist에 포함된 경우
-		if (!origin || whitelist.indexOf(origin) !== -1) {
-			callback(null, true); // cors 허용
-		} else {
-			callback(new Error('Not Allowed Origin!')); // cors 비허용
-		}
-	},
-	credentials: true, // 인증 정보를 응답 헤더에 포함시킴
+	origin: ['https://happymusic.fly.dev/', 'http://localhost:4000'],
 };
 
 app.set('view engine', 'pug');

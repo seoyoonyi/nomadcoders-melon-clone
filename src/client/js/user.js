@@ -47,16 +47,10 @@ const handleRegisterFormSubmit = async (event) => {
 
 	let response;
 	try {
-		response = await axios.post(
-			`${API_URL}/api/user/register`,
-			{
-				email,
-				password,
-			},
-			{
-				withCredentials: true,
-			},
-		);
+		response = await axios.post(`${API_URL}/api/user/register`, {
+			email,
+			password,
+		});
 	} catch (error) {
 		// eslint-disable-next-line no-console
 		console.error(error);
