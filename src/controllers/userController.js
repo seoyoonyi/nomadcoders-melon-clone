@@ -46,18 +46,14 @@ export const registerUser = async (req, res) => {
 			return res.status(409).json({ success: false, message: 'User already exists.' });
 		}
 
-		try {
-			await User.create({
-				email,
-				password,
-			});
-		} catch (error) {
-			// eslint-disable-next-line no-console
-			console.error(error);
-			return res
-				.status(500)
-				.json({ success: false, message: 'Error creating user.', error: error.toString() });
+		const newUser = await User.create({
+			email,
+			password,
+		});
+		if (!newUser) {
+			return res.status(500).json({ success: false, message: 'Error creating user.' });
 		}
+
 		res.status(201).json({ success: true });
 	} catch (error) {
 		// eslint-disable-next-line no-console

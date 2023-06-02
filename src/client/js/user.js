@@ -51,6 +51,7 @@ const handleRegisterFormSubmit = async (event) => {
 			email,
 			password,
 		});
+		console.log('response', response.text());
 	} catch (error) {
 		console.error(error);
 		alert('회원가입에 실패했습니다. 이메일이나 비밀번호를 확인해주세요.');
