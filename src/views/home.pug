@@ -78,12 +78,12 @@ block content
             label(for="email")
               u e
               span mail: 
-            input(type="email", id="email", name="email", required).inner-box
+            input(type="email", id="login-email", name="email", required).inner-box
           .password-box
             label(for="password")
               u p
               span assword: 
-            input(type="password", id="password", name="password", required).inner-box
+            input(type="password", id="login-password", name="password", required).inner-box
           button(type="submit", value="로그인").btn 로그인
     .register-induce-box
       p 아직 계정이 없으신가요?
@@ -106,12 +106,12 @@ block content
             label(for="email")
               u e
               span mail: 
-            input(type="email", id="email", name="email", required).inner-box
+            input(type="email", id="register-email", name="email", required).inner-box
           .password-box
             label(for="password")
               u p
               span assword: 
-            input(type="password", id="password", name="password", required).inner-box
+            input(type="password", id="register-password", name="password", required).inner-box
           button(type="submit", value="회원가입").btn 회원가입
     .login-induce-box
       p 이미 계정이 있으신가요?
@@ -125,9 +125,10 @@ block content
       h1 Log Out
       .icon-group
         button.modal-close#logout-modal-close
-          i.fa.fa-times-circle        
-    p 로그아웃 하시겠습니까?
-    button.btn-logout-confirm(type="button") 로그아웃
+          i.fa.fa-times-circle   
+    .logout-box           
+      p 로그아웃 하시겠습니까?
+      button.btn-logout-confirm.btn(type="button") 로그아웃
 
 
 

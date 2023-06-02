@@ -1,0 +1,21 @@
+.logout-modal {
+	width: 380px;
+
+	.modal-header {
+		width: 100%;
+	}
+	.logout-box {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		padding: 20px 0;
+		p {
+			padding-bottom: 20px;
+		}
+		button {
+			padding: 3px 30px 4px;
+			font-family: $font-family-pretendard;
+		}
+	}
+}
