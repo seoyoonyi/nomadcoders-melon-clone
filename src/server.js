@@ -29,6 +29,7 @@ const corsOptions = {
 			callback(new Error('Not Allowed Origin!')); // cors 비허용
 		}
 	},
+	credentials: true, // 인증 정보를 응답 헤더에 포함시킴
 };
 
 app.set('view engine', 'pug');

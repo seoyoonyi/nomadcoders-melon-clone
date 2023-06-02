@@ -47,12 +47,18 @@ const handleRegisterFormSubmit = async (event) => {
 
 	let response;
 	try {
-		response = await axios.post(`${API_URL}/api/user/register`, {
-			email,
-			password,
-		});
-		console.log('response', response.text());
+		response = await axios.post(
+			`${API_URL}/api/user/register`,
+			{
+				email,
+				password,
+			},
+			{
+				withCredentials: true,
+			},
+		);
 	} catch (error) {
+		// eslint-disable-next-line no-console
 		console.error(error);
 		alert('회원가입에 실패했습니다. 이메일이나 비밀번호를 확인해주세요.');
 		return;
@@ -90,6 +96,7 @@ const handleLoginFormSubmit = async (event) => {
 			password,
 		});
 	} catch (error) {
+		// eslint-disable-next-line no-console
 		console.error(error);
 		alert('이메일이나 비밀번호를 확인해주세요.');
 		return;

@@ -30,6 +30,7 @@ export default class JWTAuth {
 			const decoded = verify(token, this.secretKey); // 토큰 검증
 			return decoded;
 		} catch (error) {
+			// eslint-disable-next-line no-console
 			console.error(error);
 			return null;
 		}
