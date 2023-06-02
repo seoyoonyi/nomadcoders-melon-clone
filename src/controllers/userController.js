@@ -10,8 +10,9 @@ export const getAllUser = async (req, res) => {
 		const users = await User.find();
 		res.send(users);
 	} catch (error) {
+		// eslint-disable-next-line no-console
 		console.error(error);
-		res.status(500).send('서버 에러');
+		res.status(500).json({ success: false, message: 'Server error', error: error.toString() });
 	}
 };
 
@@ -28,8 +29,9 @@ export const loginUser = async (req, res) => {
 		res.json({ userEmail, userPassword, token });
 		// res.cookie('token', token, { httpOnly: true }); // 쿠키에 토큰 저장
 	} catch (error) {
+		// eslint-disable-next-line no-console
 		console.error(error);
-		res.status(500).send('서버 에러');
+		res.status(500).json({ success: false, message: 'Server error', error: error.toString() });
 	}
 };
 
@@ -49,7 +51,8 @@ export const registerUser = async (req, res) => {
 		});
 		res.status(201).json({ success: true });
 	} catch (error) {
+		// eslint-disable-next-line no-console
 		console.error(error);
-		res.status(500).send('서버 에러');
+		res.status(500).json({ success: false, message: 'Server error', error: error.toString() });
 	}
 };

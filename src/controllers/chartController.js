@@ -36,7 +36,8 @@ export const findChart = async (req, res) => {
 
 		res.json(updatedVideos);
 	} catch (error) {
-		console.error('chartController Error', error);
-		res.status(500).send('Internal Server Error222');
+		// eslint-disable-next-line no-console
+		console.error(error);
+		res.status(500).json({ success: false, message: 'Server error', error: error.toString() });
 	}
 };
