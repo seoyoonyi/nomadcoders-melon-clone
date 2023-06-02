@@ -42,13 +42,22 @@ export const registerUser = async (req, res) => {
 		const user = await User.findOne({ email });
 
 		if (user) {
-			return res.status(409).json({ success: false });
+			//중복 체크
+			return res.status(409).json({ success: false, message: 'User already exists.' });
 		}
 
-		await User.create({
-			email,
-			password,
-		});
+		try {
+			await User.create({
+				email,
+				password,
+			});
+		} catch (error) {
+			// eslint-disable-next-line no-console
+			console.error(error);
+			return res
+				.status(500)
+				.json({ success: false, message: 'Error creating user.', error: error.toString() });
+		}
 		res.status(201).json({ success: true });
 	} catch (error) {
 		// eslint-disable-next-line no-console
