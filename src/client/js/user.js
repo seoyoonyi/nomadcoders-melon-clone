@@ -153,5 +153,5 @@ logoutConfirmButton.addEventListener('click', () => {
 
 window.addEventListener('DOMContentLoaded', () => {
 	displayLoginStatus();
-	// updateSpinnerStatus();
+	updateSpinnerStatus();
 });
