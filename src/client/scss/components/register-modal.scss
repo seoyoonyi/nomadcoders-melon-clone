@@ -45,8 +45,13 @@
 				top: 50%;
 				left: 50%;
 				transform: translate(-50%, 90%);
+				display: flex;
+				align-items: center;
 				padding: 3px 30px 4px;
 				font-family: $font-family-pretendard;
+				span + span {
+					margin-left: 6px;
+				}
 			}
 		}
 	}

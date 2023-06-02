@@ -84,7 +84,9 @@ block content
               u p
               span assword: 
             input(type="password", id="login-password", name="password", required).inner-box
-          button(type="submit", value="로그인").btn 로그인
+          button(type="submit", value="로그인").btn#login-button 
+            span.login-txt 로그인
+            span.spinner
     .register-induce-box
       p 아직 계정이 없으신가요?
       button.btn-open-register(type="button") 회원가입
@@ -112,7 +114,9 @@ block content
               u p
               span assword: 
             input(type="password", id="register-password", name="password", required).inner-box
-          button(type="submit", value="회원가입").btn 회원가입
+          button(type="submit", value="회원가입").btn#register-button 
+            span.register-txt 회원가입
+            span.spinner
     .login-induce-box
       p 이미 계정이 있으신가요?
       button.btn-open-login(type="button") 로그인

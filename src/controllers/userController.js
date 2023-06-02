@@ -45,8 +45,17 @@ export const registerUser = async (req, res) => {
 	}
 
 	const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+	const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
 	if (!emailRegex.test(email)) {
 		return res.status(400).json({ success: false, message: '유효하지 않은 이메일 형식입니다.' });
+	}
+
+	if (!passwordRegex.test(password)) {
+		return res.status(400).json({
+			success: false,
+			message: '최소 8자 이상이며, 숫자, 대문자, 소문자를 포함해야 합니다.',
+		});
 	}
 
 	try {
@@ -54,7 +63,7 @@ export const registerUser = async (req, res) => {
 
 		if (user) {
 			//중복 체크
-			return res.status(409).json({ success: false, message: 'User already exists.' });
+			return res.status(409).json({ success: false, message: '이미 가입된 회원입니다.' });
 		}
 
 		const newUser = await User.create({

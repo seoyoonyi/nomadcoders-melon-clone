@@ -11,10 +11,30 @@ const logoutModal = document.querySelector('#logout-modal');
 const loginModal = document.querySelector('#login-modal');
 const registerModal = document.querySelector('#register-modal');
 const logoutConfirmButton = document.querySelector('.btn-logout-confirm');
+const registerButton = document.querySelector('#register-button');
+const loginButton = document.querySelector('#login-button');
+const registerSpinner = registerButton.querySelector('.spinner');
+const loginSpinner = loginButton.querySelector('.spinner');
 
+let isSubmitting = false;
 export let isLoggedIn = Boolean(localStorage.getItem('token'));
 const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
+const updateSpinnerStatus = () => {
+	if (isSubmitting) {
+		registerSpinner.hidden = false;
+		loginSpinner.hidden = false;
+	} else {
+		registerSpinner.hidden = true;
+		loginSpinner.hidden = true;
+	}
+};
+
+const updateSubmittingStatus = (newStatus) => {
+	isSubmitting = newStatus;
+	updateSpinnerStatus();
+};
 
 const displayLoginStatus = () => {
 	const headerTitle = document.querySelector('#player-modal-header h1');
@@ -32,6 +52,8 @@ const displayLoginStatus = () => {
 const handleRegisterFormSubmit = async (event) => {
 	event.preventDefault();
 
+	if (isSubmitting) return;
+
 	const email = registerEmailInput.value;
 	const password = registerPasswordInput.value;
 
@@ -47,18 +69,25 @@ const handleRegisterFormSubmit = async (event) => {
 
 	let response;
 	try {
+		updateSubmittingStatus(true);
 		response = await axios.post(`${API_URL}/api/user/register`, {
 			email,
 			password,
 		});
 	} catch (error) {
+		updateSubmittingStatus(false);
 		// eslint-disable-next-line no-console
 		console.error(error);
+		if (error.response.status === 409) {
+			alert(error.response.data.message);
+			return;
+		}
 		alert('회원가입에 실패했습니다. 이메일이나 비밀번호를 확인해주세요.');
 		return;
 	}
 
 	if (response && response.data.success) {
+		updateSubmittingStatus(false);
 		alert('회원가입에 성공했습니다!');
 		loginEmailInput.value = '';
 		loginPasswordInput.value = '';
@@ -69,6 +98,8 @@ const handleRegisterFormSubmit = async (event) => {
 
 const handleLoginFormSubmit = async (event) => {
 	event.preventDefault();
+
+	if (isSubmitting) return;
 
 	const email = loginEmailInput.value;
 	const password = loginPasswordInput.value;
@@ -85,11 +116,13 @@ const handleLoginFormSubmit = async (event) => {
 
 	let response;
 	try {
+		updateSubmittingStatus(true);
 		response = await axios.post(`${API_URL}/api/user/login`, {
 			email,
 			password,
 		});
 	} catch (error) {
+		updateSubmittingStatus(false);
 		// eslint-disable-next-line no-console
 		console.error(error);
 		alert('이메일이나 비밀번호를 확인해주세요.');
@@ -98,6 +131,7 @@ const handleLoginFormSubmit = async (event) => {
 
 	if (response && response.status === 200) {
 		console.log('로그인 성공!!', response);
+		updateSubmittingStatus(false);
 		alert('로그인에 성공했습니다!');
 		window.location.href = '/';
 		localStorage.setItem('token', response.data.token);
@@ -119,4 +153,5 @@ logoutConfirmButton.addEventListener('click', () => {
 
 window.addEventListener('DOMContentLoaded', () => {
 	displayLoginStatus();
+	// updateSpinnerStatus();
 });
