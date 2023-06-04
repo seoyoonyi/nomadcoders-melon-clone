@@ -1,11 +1,11 @@
 import express from 'express';
 import { authenticateUser } from '../middlewares';
-import { addLikedSongs, getLikedSongs, removeLikedSongs } from '../controllers/likedsongController';
+import { addSongs, getSongs, removeSongs } from '../controllers/likedSongController';
 
 const likedSongRouter = express.Router();
 
-likedSongRouter.get('/', authenticateUser, getLikedSongs);
-likedSongRouter.post('/', authenticateUser, addLikedSongs);
-likedSongRouter.delete('/:id', authenticateUser, removeLikedSongs);
+likedSongRouter.get('/', authenticateUser, getSongs);
+likedSongRouter.post('/', authenticateUser, addSongs);
+likedSongRouter.delete('/:id', authenticateUser, removeSongs);
 
 export default likedSongRouter;
