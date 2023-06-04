@@ -6,23 +6,23 @@ import { API_URL } from './api';
 const token = localStorage.getItem('token');
 
 // Create an instance of axios with the default headers
-const api = axios.create({
+const author = axios.create({
 	baseURL: API_URL,
 	headers: {
 		Authorization: `Bearer ${token}`,
 	},
 });
 
-export const addSong = async (song) => {
-	const response = await api.post('/api/song', song);
+export const addLikedSongs = async (song) => {
+	const response = await author.post('/api/liked-song', song);
 	return response.data;
 };
 
-export const getSongs = async () => {
-	const response = await api.get('/api/song');
+export const getLikedSongs = async () => {
+	const response = await author.get('/api/liked-song');
 	return response.data;
 };
 
-export const removeSong = async (id) => {
-	await api.delete(`/api/song/${id}`);
+export const removeLikedSongs = async (id) => {
+	await author.delete(`/api/liked-song/${id}`);
 };

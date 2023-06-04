@@ -130,9 +130,8 @@ const handleLoginFormSubmit = async (event) => {
 	}
 
 	if (response && response.status === 200) {
-		console.log('로그인 성공!!', response);
 		updateSubmittingStatus(false);
-		alert('로그인에 성공했습니다!');
+
 		window.location.href = '/';
 		localStorage.setItem('token', response.data.token);
 		isLoggedIn = true;
@@ -145,8 +144,7 @@ loginForm.addEventListener('submit', handleLoginFormSubmit);
 logoutConfirmButton.addEventListener('click', () => {
 	localStorage.removeItem('token');
 	logoutModal.style.display = 'none';
-	console.log('로그아웃 성공!!');
-	alert('로그아웃 성공!!');
+
 	isLoggedIn = false;
 	window.location.reload();
 });

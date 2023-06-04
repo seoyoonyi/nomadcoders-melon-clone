@@ -1,12 +1,14 @@
 //main.js
 import '../scss/styles.scss';
+import { addLikedSongs, getLikedSongs } from './likedSongs';
 
 import { getPopularSongs, player } from './play';
 import { playSong, togglePlayback } from './play';
-import { addSong, getSongs } from './song';
+
 import { isLoggedIn } from './user';
 
 let zIndex = 1;
+let likedSongs = [];
 
 const chartContent = document.querySelector('.chart-content');
 const playlistContent = document.querySelector('.playlist-content');
@@ -31,8 +33,8 @@ const renderSongs = (songs) => {
 		}
 
 		li.innerHTML = `
-			<span>${chartRank[index]}</span>
-			<div class="song-box">
+		<div class="song-box">
+			<span class="rank">${chartRank[index]}</span>
 				<div class="song-img-box">
 					<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">
 				</div>
@@ -85,27 +87,31 @@ const renderSongs = (songs) => {
 			bringToFront('#player-modal');
 		});
 
-		heartChartButton.addEventListener('click', () => {
-			const loginModal = document.querySelector('#login-modal');
-			loginModal.style.display = 'block';
-			bringToFront('#login-modal');
-
-			if (isLoggedIn) {
+		heartChartButton.addEventListener('click', async () => {
+			if (!isLoggedIn) {
+				const loginModal = document.querySelector('#login-modal');
+				loginModal.style.display = 'block';
+				bringToFront('#login-modal');
+			} else {
 				const playlistModal = document.querySelector('#playlist-modal');
 				playlistModal.style.display = 'block';
 				bringToFront('#playlist-modal');
-				addSong({
-					title: songTitle,
+
+				const response = await addLikedSongs({
+					title: song.title,
 					thumbnail: song.thumbnail,
 					videoId: song.videoId,
 				});
+
+				console.log('addLikedSongs', response);
+				likedSongs.push(response);
 			}
 		});
 	});
 };
 
 const renderMyPlaylist = async () => {
-	const mySongs = await getSongs();
+	const mySongs = await getLikedSongs();
 
 	if (!playlistContent) return;
 	playlistContent.innerHTML = '';
@@ -148,7 +154,7 @@ getPopularSongs().then((response) => {
 	renderSongs(response.data);
 });
 
-getSongs().then((response) => {
+getLikedSongs().then((response) => {
 	renderMyPlaylist(response.data);
 });
 

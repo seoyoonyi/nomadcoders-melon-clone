@@ -1,3 +1,14 @@
-.playlist-modal .playlist-content {
-	height: 200px;
+.playlist-modal {
+	width: 400px;
+
+	.modal-header {
+		width: 100%;
+	}
+
+	.playlist-content {
+		height: 450px;
+		margin: 4px;
+		background-color: white;
+		overflow-y: scroll;
+	}
 }

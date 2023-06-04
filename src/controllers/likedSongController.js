@@ -1,8 +1,7 @@
 import Song from '../models/Song';
 
-export const addSong = async (req, res) => {
+export const addLikedSongs = async (req, res) => {
 	if (!req.user) {
-		// Handle the case where the user is not authenticated
 		res.status(401).json({ error: 'Unauthorized' });
 		return;
 	}
@@ -18,9 +17,8 @@ export const addSong = async (req, res) => {
 	res.status(201).json(newSong);
 };
 
-export const getSongs = async (req, res) => {
+export const getLikedSongs = async (req, res) => {
 	if (!req.user) {
-		// Handle the case where the user is not authenticated
 		res.status(401).json({ error: 'Unauthorized' });
 		return;
 	}
@@ -29,7 +27,7 @@ export const getSongs = async (req, res) => {
 	res.status(200).json(songs);
 };
 
-export const removeSong = async (req, res) => {
+export const removeLikedSongs = async (req, res) => {
 	const { id } = req.params;
 	await Song.findByIdAndDelete(id);
 	res.status(204).end();

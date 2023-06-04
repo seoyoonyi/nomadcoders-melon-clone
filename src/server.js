@@ -9,7 +9,7 @@ import rootRouter from './routers/rootRouter';
 import chartRouter from './routers/chartRouter';
 import userRouter from './routers/userRouter';
 import { viewsRouter } from './routers/viewRouter';
-import songRouter from './routers/songRouter';
+import likedSongRouter from './routers/likedSongRouter';
 
 const app = express();
 const logger = morgan('dev');
@@ -45,7 +45,7 @@ app.use('/', rootRouter);
 
 app.use('/api/chart', chartRouter);
 app.use('/api/user', userRouter);
-app.use('/api/song', songRouter);
+app.use('/api/liked-song', likedSongRouter);
 
 app.use('/', viewsRouter);
 
