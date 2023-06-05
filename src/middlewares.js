@@ -1,5 +1,7 @@
-import jwt from 'jsonwebtoken';
 import { User } from './models/User';
+import JWTAuth from './utils/jwt';
+
+const jwtAuth = new JWTAuth();
 
 export const localsMiddleware = (req, res, next) => {
 	res.locals.loggedIn = Boolean(req.session.loggedIn);
@@ -9,19 +11,37 @@ export const localsMiddleware = (req, res, next) => {
 };
 
 export const authenticateUser = async (req, res, next) => {
-	const token = req.headers['x-access-token'] || req.headers['authorization'];
+	let token = req.headers['authorization'];
+
+	if (token && token.startsWith('Bearer ')) {
+		token = token.slice(7, token.length);
+	}
+
 	if (!token) {
-		res.status(401).json({ error: 'Access denied. No token provided.' });
-		return;
+		return res.status(403).send({ auth: false, message: 'No token provided.' });
 	}
 
 	try {
-		const decoded = jwt.verify(token, process.env.JWT_SECRET);
-		const user = await User.findById(decoded.id);
+		const decoded = await new Promise((resolve, reject) => {
+			jwtAuth.verifyToken(token, (err, decoded) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(decoded);
+				}
+			});
+		});
+
+		req.userId = decoded.id;
+
+		const user = await User.findById(decoded.userId);
+
 		if (!user) throw new Error();
 		req.user = user;
 		next();
 	} catch (error) {
+		// eslint-disable-next-line no-console
+		console.error(error);
 		res.status(400).json({ error: 'Invalid token.' });
 	}
 };

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { API_URL } from './api';
+import { author } from './likedSongs';
 
 const registerEmailInput = document.querySelector('#register-email');
 const registerPasswordInput = document.querySelector('#register-password');
@@ -21,6 +22,27 @@ export let isLoggedIn = Boolean(localStorage.getItem('token'));
 const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
+author.interceptors.response.use(
+	(response) => response,
+	(error) => {
+		if (error.response && error.response.status === 400) {
+			alert('Your session has expired. Please login again.');
+
+			localStorage.removeItem('token');
+			isLoggedIn = false;
+
+			const loginStatus = document.querySelector('.login-status');
+			loginStatus.textContent = '';
+
+			const loginModal = document.querySelector('#login-modal');
+			if (loginModal) {
+				loginModal.style.display = 'block';
+			}
+		}
+		throw error;
+	},
+);
+
 const updateSpinnerStatus = () => {
 	if (isSubmitting) {
 		registerSpinner.hidden = false;
@@ -36,16 +58,17 @@ const updateSubmittingStatus = (newStatus) => {
 	updateSpinnerStatus();
 };
 
-const displayLoginStatus = () => {
+export const displayLoginStatus = () => {
 	const headerTitle = document.querySelector('#player-modal-header h1');
-	const emailElement = document.createElement('span');
-	headerTitle.appendChild(emailElement);
+	const loginStatus = document.createElement('span');
+	loginStatus.classList.add('login-status');
+	headerTitle.appendChild(loginStatus);
 
 	const token = localStorage.getItem('token');
 	if (token) {
-		emailElement.textContent = ' - Logged in';
+		loginStatus.textContent = ' - Logged in';
 	} else {
-		emailElement.textContent = '';
+		loginStatus.textContent = '';
 	}
 };
 

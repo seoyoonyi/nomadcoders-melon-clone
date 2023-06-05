@@ -13,21 +13,21 @@ export default class JWTAuth {
 
 	generateToken(user) {
 		const payload = {
-			userId: user._id, // 토큰에 담을 데이터
+			userId: user._id,
 			userEmail: user.email,
 		};
 		const options = {
-			expiresIn: '1h', // 토큰 만료 시간
-			issuer: 'myIssuer', // 발급자
+			expiresIn: '1h',
+			issuer: 'myIssuer',
 		};
-		const token = sign(payload, this.secretKey, options); // 토큰 생성
-		this.tokenStorage.saveToken(token); // 생성된 토큰 저장
+		const token = sign(payload, this.secretKey, options);
+		this.tokenStorage.saveToken(token);
 		return token;
 	}
 
-	verifyToken(token) {
+	verifyToken(token, func) {
 		try {
-			const decoded = verify(token, this.secretKey); // 토큰 검증
+			const decoded = verify(token, this.secretKey, func); // 토큰 검증
 			return decoded;
 		} catch (error) {
 			// eslint-disable-next-line no-console
