@@ -35,11 +35,11 @@ const renderSongs = (songs) => {
 		li.innerHTML = `
 		<div class="song-box">
 			<span class="rank">${chartRank[index]}</span>
-				<div class="song-img-box">
-					<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">
-				</div>
-				<p>${songTitle}</p>
+			<div class="song-img-box">
+				<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">
 			</div>
+			<p>${songTitle}</p>
+		
 			<div class="button-box">
 				<button id="play-button" class="btn play-button">
 					<i class="fa fa-play"></i>
@@ -48,6 +48,7 @@ const renderSongs = (songs) => {
 					<i class="fa fa-heart"></i>
 				</button>
 			</div>
+		</div>
 		`;
 		li.setAttribute('data-video-id', song.videoId);
 		chartContent.appendChild(li);
@@ -87,24 +88,27 @@ const renderSongs = (songs) => {
 			bringToFront('#player-modal');
 		});
 
-		heartChartButton.addEventListener('click', async () => {
+		heartChartButton.addEventListener('click', async (event) => {
 			if (!isLoggedIn) {
 				const loginModal = document.querySelector('#login-modal');
 				loginModal.style.display = 'block';
 				bringToFront('#login-modal');
 			} else {
-				const playlistModal = document.querySelector('#playlist-modal');
-				playlistModal.style.display = 'block';
-				bringToFront('#playlist-modal');
+				event.target.classList.toggle('heart-active');
 
-				const response = await addLikedSongs({
-					title: song.title,
-					thumbnail: song.thumbnail,
-					videoId: song.videoId,
-				});
+				try {
+					const response = await addLikedSongs({
+						title: song.title,
+						thumbnail: song.thumbnail,
+						videoId: song.videoId,
+						heartStatus: 'liked',
+					});
 
-				console.log('addLikedSongs', response);
-				likedSongs.push(response);
+					console.log('addLikedSongs', response);
+					likedSongs.push(response);
+				} catch (error) {
+					console.error(error);
+				}
 			}
 		});
 	});
@@ -124,11 +128,19 @@ const renderMyPlaylist = async () => {
 			songTitle = songTitle.substring(0, 35) + '...';
 		}
 		li.innerHTML = `
-			<span>${index + 1}</span>
-			<div>
-				<img src="${song.thumbnail}" alt="${song.title}">
+			<div class="song-box">
+				<span class="rank">${index + 1}</span>
+				<div class="song-img-box">
+					<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">
+				</div>
+				<p>${songTitle}</p>
+			
+				<div class="button-box">
+					<button id="play-button" class="btn play-button">
+						<i class="fa fa-play"></i>
+					</button>
+				</div>
 			</div>
-			<p>${songTitle}</p>
     	`;
 		li.setAttribute('data-video-id', song.videoId);
 		playlistContent.appendChild(li);
@@ -237,12 +249,19 @@ makeDraggable('#register-modal-header', '#register-modal');
 makeDraggable('#logout-modal-header', '#logout-modal');
 makeDraggable('#playlist-modal-header', '#playlist-modal');
 
-playlistMenu.addEventListener('click', () => {
+playlistMenu.addEventListener('click', async () => {
 	if (!isLoggedIn) {
 		// 사용자가 로그인하지 않았다면
 		const loginModal = document.querySelector('#login-modal');
 		loginModal.style.display = 'block'; // 로그인 모달창을 보여줍니다.
 	} else {
+		try {
+			const response = await getLikedSongs();
+			renderMyPlaylist(response.data);
+		} catch (error) {
+			console.error(error);
+		}
+
 		const playlistModal = document.querySelector('#playlist-modal');
 		playlistModal.style.display = 'block'; // 로그인 모달창을 보여줍니다.
 	}

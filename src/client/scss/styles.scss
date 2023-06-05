@@ -93,12 +93,16 @@ main {
 }
 
 .spinner {
-	border: 3px solid #fffbe6;
+	border: 3px solid transparent;
 	border-top: 3px solid #ffd500;
 	border-radius: 50%;
 	width: 9px;
 	height: 9px;
 	animation: spin 1s linear infinite;
+}
+
+.heart-active {
+	color: red;
 }
 
 @keyframes spin {

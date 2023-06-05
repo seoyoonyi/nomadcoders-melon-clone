@@ -6,10 +6,12 @@ export const addSongs = async (req, res) => {
 		return;
 	}
 
-	const { title, thumbnail } = req.body;
+	const { title, thumbnail, videoId, heartStatus } = req.body;
 	const newSong = await Song.create({
 		title,
 		thumbnail,
+		videoId,
+		heartStatus,
 		user: req.user._id,
 	});
 
