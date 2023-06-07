@@ -53,10 +53,22 @@
 		.button-box {
 			display: flex;
 			align-items: center;
-			margin-left: 12px;
+			margin-left: 2px;
 			button {
 				padding: 2px 10px 1px;
 			}
 		}
+	}
+}
+
+.playlist-empty {
+	margin-top: 50px;
+	text-align: center;
+	line-height: 1.5;
+	color: #4b4b4b;
+	font-size: 14px;
+	font-style: oblique;
+	i {
+		margin-right: 1px;
 	}
 }

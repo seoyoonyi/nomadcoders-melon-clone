@@ -11,15 +11,6 @@ const songSchema = new mongoose.Schema({
 	},
 });
 
-songSchema.set('toJSON', {
-	virtuals: true,
-	versionKey: false,
-	transform: function (doc, ret) {
-		delete ret._id;
-		ret.id = ret._id;
-	},
-});
-
 const Song = mongoose.model('Song', songSchema);
 
 export default Song;

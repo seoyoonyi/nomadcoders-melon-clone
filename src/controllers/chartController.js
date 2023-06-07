@@ -30,6 +30,7 @@ export const findChart = async (req, res) => {
 				videoId: videoId,
 				audioUrl: `https://www.youtube.com/watch?v=${videoId}`,
 				duration: moment.utc(moment.duration(duration).asMilliseconds()).format('HH:mm:ss'),
+				heartStatus: 'unlike',
 			};
 		});
 		const updatedVideos = await Promise.all(videoDetailsPromises);

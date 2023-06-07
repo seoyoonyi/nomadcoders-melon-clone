@@ -46,11 +46,9 @@
 		.button-box {
 			display: flex;
 			align-items: center;
+			margin-left: 2px;
 			button {
 				padding: 2px 10px 1px;
-			}
-			button:last-child {
-				margin-right: 12px;
 			}
 		}
 	}

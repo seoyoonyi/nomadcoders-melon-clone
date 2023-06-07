@@ -1,6 +1,6 @@
 //main.js
 import '../scss/styles.scss';
-import { addLikedSongs, getLikedSongs } from './likedSongs';
+import { addLikedSongs, getLikedSongs, removeLikedSongs } from './likedSongs';
 
 import { getPopularSongs, player } from './play';
 import { playSong, togglePlayback } from './play';
@@ -38,13 +38,13 @@ const renderSongs = (songs) => {
 			<div class="song-img-box">
 				<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">
 			</div>
-			<p>${songTitle}</p>
+			<p class="song-title">${songTitle}</p>
 		
 			<div class="button-box">
 				<button id="play-button" class="btn play-button">
 					<i class="fa fa-play"></i>
 				</button>			
-				<button id="heart-button" class="btn heart-button">
+				<button id="heart-button" class="btn heart-button heart-${song.videoId}">
 					<i class="fa fa-heart"></i>
 				</button>
 			</div>
@@ -88,15 +88,15 @@ const renderSongs = (songs) => {
 			bringToFront('#player-modal');
 		});
 
-		heartChartButton.addEventListener('click', async (event) => {
+		heartChartButton.addEventListener('click', async () => {
 			if (!isLoggedIn) {
 				const loginModal = document.querySelector('#login-modal');
 				loginModal.style.display = 'block';
 				bringToFront('#login-modal');
 			} else {
-				event.target.classList.toggle('heart-active');
-
 				try {
+					heartChartButton.classList.add('heart-active');
+
 					const response = await addLikedSongs({
 						title: song.title,
 						thumbnail: song.thumbnail,
@@ -104,7 +104,6 @@ const renderSongs = (songs) => {
 						heartStatus: 'liked',
 					});
 
-					console.log('addLikedSongs', response);
 					likedSongs.push(response);
 				} catch (error) {
 					console.error(error);
@@ -115,12 +114,19 @@ const renderSongs = (songs) => {
 };
 
 const renderMyPlaylist = async () => {
-	const mySongs = await getLikedSongs();
+	const likedSongs = await getLikedSongs();
 
 	if (!playlistContent) return;
+
+	if (likedSongs.length === 0) {
+		playlistContent.innerHTML =
+			'<p class="playlist-empty">목록이 비어 있습니다.<br> 이 목록에 노래를 추가하려면 <i class="fa fa-heart"></i>버튼을 클릭하십시오.</p>';
+		return;
+	}
+
 	playlistContent.innerHTML = '';
 
-	mySongs.forEach((song, index) => {
+	likedSongs.forEach((song, index) => {
 		const li = document.createElement('li');
 
 		let songTitle = song.title;
@@ -133,12 +139,15 @@ const renderMyPlaylist = async () => {
 				<div class="song-img-box">
 					<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">
 				</div>
-				<p>${songTitle}</p>
+				<p class="song-title">${songTitle}</p>
 			
 				<div class="button-box">
 					<button id="play-button" class="btn play-button">
 						<i class="fa fa-play"></i>
 					</button>
+					<button id="heart-button" class="btn heart-button heart-${song.videoId}">
+						<i class="fa fa-heart"></i>
+					</button>					
 				</div>
 			</div>
     	`;
@@ -158,6 +167,68 @@ const renderMyPlaylist = async () => {
 			}
 
 			bringToFront('#playlist-modal');
+		});
+
+		const heartChartButton = li.querySelector('.button-box .heart-button');
+		const playChartButton = li.querySelector('.button-box .play-button');
+		const songTitleText = li.querySelector('.song-box .song-title');
+
+		if (song.heartStatus === 'liked') {
+			heartChartButton.classList.add('heart-active');
+		}
+
+		playChartButton.addEventListener('click', () => {
+			const videoId = li.getAttribute('data-video-id');
+			if (videoId) {
+				playSong(`https://www.youtube.com/watch?v=${videoId}`);
+				togglePlayback();
+
+				const thumbNailDiv = document.querySelector('.audio-info-box .thumb-nail');
+				const titleDiv = document.querySelector('.audio-info-box .title');
+				thumbNailDiv.innerHTML = `<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">`;
+				titleDiv.textContent = songTitle;
+			}
+			togglePlayback(); // 음악이 이미 재생 중이라면 이 함수가 일시 정지를 수행합니다.
+			player.unMute();
+			bringToFront('#player-modal');
+		});
+
+		heartChartButton.addEventListener('click', async () => {
+			if (!isLoggedIn) {
+				const loginModal = document.querySelector('#login-modal');
+				loginModal.style.display = 'block';
+				bringToFront('#login-modal');
+			} else {
+				try {
+					const existingSongs = await getLikedSongs();
+
+					// 이미 좋아요한 곡인지 확인
+					const isAlreadyLiked = existingSongs.some(
+						(existingSong) =>
+							existingSong.videoId === song.videoId &&
+							existingSong.heartStatus === song.heartStatus,
+					);
+					// 이미 좋아요한 곡이라면 DB에서 해당 곡을 제거하고 함수 종료
+					if (isAlreadyLiked) {
+						const likedSong = existingSongs.find(
+							(existingSong) =>
+								existingSong.videoId === song.videoId &&
+								existingSong.heartStatus === song.heartStatus,
+						);
+						if (likedSong && likedSong._id) {
+							await removeLikedSongs(likedSong._id); // DB에서 제거
+							songTitleText.classList.add('playlist-remove');
+							heartChartButton.classList.remove('heart-active');
+							alert('You have removed this song from your liked songs.');
+							return;
+						} else {
+							throw new Error('The liked song does not have a valid id.');
+						}
+					}
+				} catch (error) {
+					console.error(error);
+				}
+			}
 		});
 	});
 };
