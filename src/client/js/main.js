@@ -2,7 +2,7 @@
 import '../scss/styles.scss';
 import { addLikedSongs, getLikedSongs, removeLikedSongs } from './likedSongs';
 
-import { getPopularSongs, player } from './play';
+import { getPopularSongs, playSongFromPlaylist, player } from './play';
 import { playSong, togglePlayback } from './play';
 
 import { isLoggedIn } from './user';
@@ -39,15 +39,15 @@ const renderSongs = (songs) => {
 				<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">
 			</div>
 			<p class="song-title">${songTitle}</p>
-		
-			<div class="button-box">
-				<button id="play-button" class="btn play-button">
-					<i class="fa fa-play"></i>
-				</button>			
-				<button id="heart-button" class="btn heart-button heart-${song.videoId}">
-					<i class="fa fa-heart"></i>
-				</button>
-			</div>
+		</div>
+	
+		<div class="button-box">
+			<button id="play-button" class="btn play-button">
+				<i class="fa fa-play"></i>
+			</button>			
+			<button id="heart-button" class="btn heart-button heart-${song.videoId}">
+				<i class="fa fa-heart"></i>
+			</button>
 		</div>
 		`;
 		li.setAttribute('data-video-id', song.videoId);
@@ -134,22 +134,22 @@ const renderMyPlaylist = async () => {
 			songTitle = songTitle.substring(0, 35) + '...';
 		}
 		li.innerHTML = `
-			<div class="song-box">
-				<span class="rank">${index + 1}</span>
-				<div class="song-img-box">
-					<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">
-				</div>
-				<p class="song-title">${songTitle}</p>
-			
-				<div class="button-box">
-					<button id="play-button" class="btn play-button">
-						<i class="fa fa-play"></i>
-					</button>
-					<button id="heart-button" class="btn heart-button heart-${song.videoId}">
-						<i class="fa fa-heart"></i>
-					</button>					
-				</div>
+		<div class="song-box">
+			<span class="rank">${index + 1}</span>
+			<div class="song-img-box">
+				<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">
 			</div>
+			<p class="song-title">${songTitle}</p>
+		</div>
+
+		<div class="button-box">
+			<button id="play-button" class="btn play-button">
+				<i class="fa fa-play"></i>
+			</button>			
+			<button id="heart-button" class="btn heart-button heart-${song.videoId}">
+				<i class="fa fa-heart"></i>
+			</button>
+		</div>
     	`;
 		li.setAttribute('data-video-id', song.videoId);
 		playlistContent.appendChild(li);
@@ -157,7 +157,7 @@ const renderMyPlaylist = async () => {
 		li.addEventListener('dblclick', (event) => {
 			const videoId = event.currentTarget.getAttribute('data-video-id');
 			if (videoId) {
-				playSong(`https://www.youtube.com/watch?v=${videoId}`);
+				playSongFromPlaylist(`https://www.youtube.com/watch?v=${videoId}`, index);
 				togglePlayback();
 
 				const thumbNailDiv = document.querySelector('.audio-info-box .thumb-nail');
@@ -166,7 +166,7 @@ const renderMyPlaylist = async () => {
 				titleDiv.textContent = songTitle;
 			}
 
-			bringToFront('#playlist-modal');
+			bringToFront('#player-modal');
 		});
 
 		const heartChartButton = li.querySelector('.button-box .heart-button');
@@ -180,7 +180,7 @@ const renderMyPlaylist = async () => {
 		playChartButton.addEventListener('click', () => {
 			const videoId = li.getAttribute('data-video-id');
 			if (videoId) {
-				playSong(`https://www.youtube.com/watch?v=${videoId}`);
+				playSongFromPlaylist(`https://www.youtube.com/watch?v=${videoId}`, index);
 				togglePlayback();
 
 				const thumbNailDiv = document.querySelector('.audio-info-box .thumb-nail');

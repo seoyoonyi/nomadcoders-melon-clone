@@ -45,7 +45,7 @@ app.use('/', rootRouter);
 
 app.use('/api/chart', chartRouter);
 app.use('/api/user', userRouter);
-app.use('/api/liked-song', likedSongRouter);
+app.use('/api/user/liked-song', likedSongRouter);
 
 app.use('/', viewsRouter);
 

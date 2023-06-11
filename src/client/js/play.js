@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { API_URL } from './api';
-import { isLoggedIn } from './user';
-import { bringToFront } from './main';
+import { getLikedSongs } from './likedSongs';
 
 export let player;
 let isPlaying = false;
@@ -32,7 +31,6 @@ window.onYouTubeIframeAPIReady = () => {
 		},
 		events: {
 			onReady: (event) => {
-				console.log('onReady', event.target);
 				event.target.playVideo();
 				event.target.mute();
 			},
@@ -41,13 +39,107 @@ window.onYouTubeIframeAPIReady = () => {
 	});
 };
 
+let popularSongsList = []; // 인기 차트 목록
+let currentSongIndex = 0; // 현재 재생 중인 곡의 인덱스
+let playlistSongsList = []; // 사용자 재생 목록
+let isPlaylistMode = false; // 사용자 재생 목록 모드
+
+// 인기 차트 목록 가져오기
 export const getPopularSongs = async () => {
 	try {
 		const response = await axios.get(`${API_URL}/api/chart`);
-
+		popularSongsList = response.data;
+		console.log('popularSongsList', popularSongsList);
+		currentSongIndex = 1;
+		isPlaylistMode = false; // 사용자 재생 목록 모드 비활성화
 		return response;
 	} catch (error) {
-		console.log(error);
+		console.error(error);
+	}
+};
+
+// 사용자 재생 목록 가져오기
+export const getUserPlaylist = async () => {
+	try {
+		const response = await getLikedSongs();
+		console.log('responseasdfasdfas', response);
+		playlistSongsList = response;
+		isPlaylistMode = true; // 사용자 재생 목록 모드 활성화
+		return response;
+	} catch (error) {
+		console.error(error);
+	}
+};
+
+// 사용자가 플레이리스트에 있는 특정 곡을 클릭하여 재생하는 경우
+export const playSongFromPlaylist = async (url, index) => {
+	await getUserPlaylist(); // 사용자 플레이리스트를 가져옵니다.
+	currentSongIndex = index; // 재생하려는 곡의 인덱스를 설정합니다.
+	playSong(url); // 곡을 재생합니다.
+};
+
+// 썸네일과 제목을 UI에 반영
+const updatePlayerUI = (title, thumbnail) => {
+	const titleElement = document.querySelector('.audio-info-box .title');
+	const thumbnailElement = document.querySelector('.audio-info-box .thumb-nail');
+
+	titleElement.textContent = title;
+
+	const thumbnailImg = thumbnailElement.querySelector('img') || document.createElement('img');
+	thumbnailImg.src = thumbnail;
+	thumbnailElement.appendChild(thumbnailImg);
+};
+
+// 다음 곡 재생
+const playNextSong = () => {
+	console.log('isPlaylistMode', isPlaylistMode);
+	let songList = isPlaylistMode ? playlistSongsList : popularSongsList; // 플레이리스트 모드에 따라 재생목록 결정
+	// `https://www.youtube.com/watch?v=${videoId}`
+
+	if (currentSongIndex < songList.length - 1) {
+		currentSongIndex++;
+		const nextSong = songList[currentSongIndex];
+		if (nextSong.videoId) {
+			updatePlayerUI(nextSong.title, nextSong.thumbnail);
+			playSong(`https://www.youtube.com/watch?v=${nextSong.videoId}`);
+		} else {
+			alert('다음 곡 정보가 올바르지 않습니다.');
+		}
+	} else {
+		alert('플레이리스트의 마지막 곡입니다.');
+	}
+};
+
+// 이전 곡 재생
+const playPreviousSong = () => {
+	let songList = isPlaylistMode ? playlistSongsList : popularSongsList; // 플레이리스트 모드에 따라 재생목록 결정
+
+	currentSongIndex--;
+	if (isPlaylistMode) {
+		const prevSong = songList[currentSongIndex];
+		if (prevSong.videoId) {
+			updatePlayerUI(prevSong.title, prevSong.thumbnail);
+			playSong(`https://www.youtube.com/watch?v=${prevSong.videoId}`);
+		} else {
+			alert('이전 곡 정보가 올바르지 않습니다.');
+		}
+	} else {
+		alert('첫 곡입니다.');
+	}
+};
+
+// 곡 상태 변화 이벤트
+const onPlayerStateChange = (event) => {
+	if (event.data === YT.PlayerState.PLAYING) {
+		progressBar.max = player.get;
+		progressBar.max = player.getDuration();
+		setInterval(() => updateProgressBar(player), 1000);
+	}
+	if (event.data === YT.PlayerState.ENDED) {
+		playNextSong(); // 현재 곡이 끝나면 다음 곡을 재생합니다.
+		lastVideoId = null;
+	} else {
+		lastVideoId = videoId;
 	}
 };
 
@@ -72,18 +164,6 @@ export const playSong = async (url) => {
 			player.playVideo();
 			isPlaying = true; // 여기에 isPlaying을 true로 업데이트 해줍니다.
 		}
-	}
-};
-
-const onPlayerStateChange = (event) => {
-	if (event.data === YT.PlayerState.PLAYING) {
-		progressBar.max = player.getDuration();
-		setInterval(() => updateProgressBar(player), 1000);
-	}
-	if (event.data === YT.PlayerState.ENDED) {
-		lastVideoId = null;
-	} else {
-		lastVideoId = videoId;
 	}
 };
 
@@ -206,20 +286,12 @@ progressContainer.addEventListener('click', (event) => {
 	player.seekTo(seekTime, true);
 });
 
+// 이전 곡 버튼 이벤트 리스너
 backwardButton.addEventListener('click', () => {
-	if (!isLoggedIn) {
-		alert('로그인 후 이용 가능합니다.');
-		const loginModal = document.querySelector('#login-modal');
-		loginModal.style.display = 'block';
-		bringToFront('#login-modal');
-	}
+	playPreviousSong();
 });
 
+// 다음 곡 버튼 이벤트 리스너
 forwardButton.addEventListener('click', () => {
-	if (!isLoggedIn) {
-		alert('로그인 후 이용 가능합니다.');
-		const loginModal = document.querySelector('#login-modal');
-		loginModal.style.display = 'block';
-		bringToFront('#login-modal');
-	}
+	playNextSong();
 });

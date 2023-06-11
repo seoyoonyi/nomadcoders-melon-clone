@@ -22,11 +22,17 @@ export let isLoggedIn = Boolean(localStorage.getItem('token'));
 const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
+let alertShown = false; // 추가된 플래그
+
 author.interceptors.response.use(
 	(response) => response,
 	(error) => {
 		if (error.response && error.response.status === 400) {
-			alert('Your session has expired. Please login again.');
+			if (!alertShown) {
+				// 추가된 조건문
+				alert('Your session has expired. Please login again.');
+				alertShown = true; // 플래그를 설정하여 두 번째 알림을 방지
+			}
 
 			localStorage.removeItem('token');
 			isLoggedIn = false;
