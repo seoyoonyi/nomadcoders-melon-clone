@@ -222,7 +222,7 @@ const renderMyPlaylist = async () => {
 							await removeLikedSongs(likedSong._id); // DB에서 제거
 							songTitleText.classList.add('playlist-remove');
 							heartChartButton.classList.remove('heart-active');
-							alert('You have removed this song from your liked songs.');
+							alert('좋아하는 노래 목록에서 해당 곡이 제거되었습니다.');
 							return;
 						} else {
 							throw new Error('The liked song does not have a valid id.');

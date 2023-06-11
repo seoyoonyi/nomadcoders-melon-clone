@@ -29,7 +29,7 @@ author.interceptors.response.use(
 	(error) => {
 		if (error.response && error.response.status === 400) {
 			if (!alertShown && isLoggedIn) {
-				alert('Your session has expired. Please login again.');
+				alert('세션 유효기간이 만료되었습니다. 다시 로그인해 주세요.');
 				alertShown = true;
 
 				const loginModal = document.querySelector('#login-modal');

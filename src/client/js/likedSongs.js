@@ -30,8 +30,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 	try {
 		const likedSongs = await getLikedSongs();
 
-		console.log('likedSongs33', likedSongs);
-
 		// 각각의 곡에 대해
 
 		likedSongs.forEach((song) => {

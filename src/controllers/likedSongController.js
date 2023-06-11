@@ -15,7 +15,6 @@ export const addSongs = async (req, res) => {
 		user: req.user._id,
 	});
 
-	console.log('newSong', newSong);
 	res.status(201).json(newSong);
 };
 
