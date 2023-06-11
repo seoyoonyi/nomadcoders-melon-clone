@@ -49,9 +49,8 @@ export const getPopularSongs = async () => {
 	try {
 		const response = await axios.get(`${API_URL}/api/chart`);
 		popularSongsList = response.data;
-		console.log('popularSongsList', popularSongsList);
 		currentSongIndex = 1;
-		isPlaylistMode = false; // 사용자 재생 목록 모드 비활성화
+		isPlaylistMode = false;
 		return response;
 	} catch (error) {
 		console.error(error);
@@ -62,10 +61,8 @@ export const getPopularSongs = async () => {
 export const getUserPlaylist = async () => {
 	try {
 		const response = await getLikedSongs();
-		console.log('responseasdfasdfas', response);
 		playlistSongsList = response;
-		isPlaylistMode = true; // 사용자 재생 목록 모드 활성화
-		return response;
+		isPlaylistMode = true;
 	} catch (error) {
 		console.error(error);
 	}
@@ -73,9 +70,11 @@ export const getUserPlaylist = async () => {
 
 // 사용자가 플레이리스트에 있는 특정 곡을 클릭하여 재생하는 경우
 export const playSongFromPlaylist = async (url, index) => {
-	await getUserPlaylist(); // 사용자 플레이리스트를 가져옵니다.
-	currentSongIndex = index; // 재생하려는 곡의 인덱스를 설정합니다.
-	playSong(url); // 곡을 재생합니다.
+	pauseButton.classList.remove('hidden');
+	playButton.classList.add('hidden');
+	await getUserPlaylist();
+	currentSongIndex = index;
+	await playSong(url);
 };
 
 // 썸네일과 제목을 UI에 반영
@@ -92,9 +91,7 @@ const updatePlayerUI = (title, thumbnail) => {
 
 // 다음 곡 재생
 const playNextSong = () => {
-	console.log('isPlaylistMode', isPlaylistMode);
-	let songList = isPlaylistMode ? playlistSongsList : popularSongsList; // 플레이리스트 모드에 따라 재생목록 결정
-	// `https://www.youtube.com/watch?v=${videoId}`
+	let songList = isPlaylistMode ? playlistSongsList : popularSongsList;
 
 	if (currentSongIndex < songList.length - 1) {
 		currentSongIndex++;
@@ -112,10 +109,10 @@ const playNextSong = () => {
 
 // 이전 곡 재생
 const playPreviousSong = () => {
-	let songList = isPlaylistMode ? playlistSongsList : popularSongsList; // 플레이리스트 모드에 따라 재생목록 결정
+	let songList = isPlaylistMode ? playlistSongsList : popularSongsList;
 
-	currentSongIndex--;
-	if (isPlaylistMode) {
+	if (currentSongIndex > 0) {
+		currentSongIndex--;
 		const prevSong = songList[currentSongIndex];
 		if (prevSong.videoId) {
 			updatePlayerUI(prevSong.title, prevSong.thumbnail);
@@ -155,7 +152,7 @@ export const playSong = async (url) => {
 	if (player) {
 		if (lastVideoId === videoId && player.getPlayerState() !== YT.PlayerState.ENDED) {
 			player.playVideo();
-			isPlaying = true; // 여기에 isPlaying을 true로 업데이트 해줍니다.
+			isPlaying = true;
 		} else {
 			player.loadVideoById({
 				videoId: videoId,
@@ -192,9 +189,9 @@ export const setVolume = (volume) => {
 export const playAudio = (url) => {
 	audioPlayer.src = url;
 	audioPlayer.play();
-	isPlaying = true; // 재생을 시작하면서 isPlaying을 true로 설정합니다.
-	pauseButton.classList.remove('hidden'); // 재생을 시작하면서 일시 중지 버튼을 보여줍니다.
-	playButton.classList.add('hidden'); // 재생을 시작하면서 재생 버튼을 숨깁니다.
+	isPlaying = true;
+	pauseButton.classList.remove('hidden');
+	playButton.classList.add('hidden');
 };
 
 const pauseAudio = () => {
@@ -204,9 +201,9 @@ const pauseAudio = () => {
 	if (player && player.getPlayerState() === YT.PlayerState.PLAYING) {
 		player.pauseVideo();
 	}
-	isPlaying = false; // 재생을 일시 중지하면서 isPlaying을 false로 설정합니다.
-	playButton.classList.remove('hidden'); // 재생을 일시 중지하면서 재생 버튼을 보여줍니다.
-	pauseButton.classList.add('hidden'); // 재생을 일시 중지하면서 일시 중지 버튼을 숨깁니다.
+	isPlaying = false;
+	playButton.classList.remove('hidden');
+	pauseButton.classList.add('hidden');
 };
 
 export const togglePlayback = () => {
@@ -215,10 +212,10 @@ export const togglePlayback = () => {
 	} else {
 		if (lastVideoId === videoId && player.getPlayerState() !== YT.PlayerState.ENDED) {
 			player.playVideo();
-			player.unMute(); // 재생을 시작하면서 음소거를 해제합니다.
+			player.unMute();
 		} else {
 			playSong(`https://www.youtube.com/watch?v=${videoId}`);
-			player.unMute(); // 재생을 시작하면서 음소거를 해제합니다.
+			player.unMute();
 		}
 		playAudio(audioPlayer.src);
 	}

@@ -2,7 +2,7 @@
 import '../scss/styles.scss';
 import { addLikedSongs, getLikedSongs, removeLikedSongs } from './likedSongs';
 
-import { getPopularSongs, playSongFromPlaylist, player } from './play';
+import { getPopularSongs, getUserPlaylist, playSongFromPlaylist, player } from './play';
 import { playSong, togglePlayback } from './play';
 
 import { isLoggedIn } from './user';
@@ -105,6 +105,8 @@ const renderSongs = (songs) => {
 					});
 
 					likedSongs.push(response);
+
+					await getUserPlaylist();
 				} catch (error) {
 					console.error(error);
 				}
@@ -165,7 +167,8 @@ const renderMyPlaylist = async () => {
 				thumbNailDiv.innerHTML = `<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">`;
 				titleDiv.textContent = songTitle;
 			}
-
+			togglePlayback(); // 음악이 이미 재생 중이라면 이 함수가 일시 정지를 수행합니다.
+			player.unMute();
 			bringToFront('#player-modal');
 		});
 
