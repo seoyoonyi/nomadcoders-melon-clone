@@ -4,7 +4,7 @@ import moment from 'moment';
 
 dotenv.config();
 const API_KEY = process.env.YOUTUBE_API_KEY;
-const flag = process.env.NODE_ENV === 'production';
+let flag = process.env.NODE_ENV === 'production';
 const YOTUBE_URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=CityPop&type=video&key=${API_KEY}&order=viewCount`;
 const yotubeApiUrl = flag ? YOTUBE_URL : 'http://localhost:4000/public/data/mock.json';
 
@@ -37,8 +37,13 @@ export const findChart = async (req, res) => {
 
 		res.json(updatedVideos);
 	} catch (error) {
-		// eslint-disable-next-line no-console
-		console.error(error);
-		res.status(500).json({ success: false, message: 'Server error', error: error.toString() });
+		if (error.response && error.response.status === 429) {
+			alert('API 호출 횟수가 초과 되었습니다. 로컬 데이터를 사용합니다.');
+			flag = !flag;
+			findChart(req, res);
+		} else {
+			console.error(error);
+			res.status(500).json({ success: false, message: 'Server error', error: error.toString() });
+		}
 	}
 };
