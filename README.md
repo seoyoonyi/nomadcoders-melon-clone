@@ -67,7 +67,7 @@
 
 ### **🎉 플레이리스트**
 
-- 화면 크기에 따라 적절하게 변하는 반응형 웹을 구현했습니다.
+- 로그인 한 사용자 대상으로, 내가 찜한 곡으로 플레이리스트를 만들 수 있습니다.
 
 ![cwmiB8g](https://github.com/seoyoonyi/nomadcoders-melon-clone/assets/89791868/7d71f70e-1d58-4bee-973b-fe435668e7ad)
 
