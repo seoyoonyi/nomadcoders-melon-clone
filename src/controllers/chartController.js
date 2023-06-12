@@ -10,17 +10,50 @@ const yotubeApiUrl = flag ? YOTUBE_URL : 'http://localhost:4000/public/data/mock
 
 export const findChart = async (req, res) => {
 	try {
-		const searchResponse = await axios.get(yotubeApiUrl, { credentials: true });
+		let searchResponse;
+		try {
+			searchResponse = await axios.get(yotubeApiUrl, { credentials: true });
+		} catch (error) {
+			if (error.response && error.response.status === 403) {
+				res
+					.status(403)
+					.json({
+						success: false,
+						message: 'API 호출 횟수가 초과되어 로컬 데이터를 사용합니다.',
+						error: error.toString(),
+					});
+				searchResponse = await axios.get('http://localhost:4000/public/data/mock.json');
+			} else {
+				throw error;
+			}
+		}
 
 		const videos = searchResponse.data.items;
 
 		const videoDetailsPromises = videos.map(async (video) => {
 			const videoId = video.id.videoId;
 			const YOTUBE_DETAIL_URL = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoId}&key=${API_KEY}`;
-			const yotubeDetailApiUrl = flag
+			const yotubeDetailUrl = flag
 				? YOTUBE_DETAIL_URL
 				: 'http://localhost:4000/public/data/detail.json';
-			const videoDetailsResponse = await axios.get(yotubeDetailApiUrl);
+			let videoDetailsResponse;
+			try {
+				videoDetailsResponse = await axios.get(yotubeDetailUrl);
+			} catch (error) {
+				if (error.response && error.response.status === 403) {
+					res
+						.status(403)
+						.json({
+							success: false,
+							message: 'API 호출 횟수가 초과되어 로컬 데이터를 사용합니다.',
+							error: error.toString(),
+						});
+					videoDetailsResponse = await axios.get('http://localhost:4000/public/data/detail.json');
+				} else {
+					throw error;
+				}
+			}
+
 			const duration = videoDetailsResponse.data.items[0].contentDetails.duration;
 
 			return {
@@ -33,17 +66,10 @@ export const findChart = async (req, res) => {
 				heartStatus: 'unlike',
 			};
 		});
-		const updatedVideos = await Promise.all(videoDetailsPromises);
 
+		const updatedVideos = await Promise.all(videoDetailsPromises);
 		res.json(updatedVideos);
 	} catch (error) {
-		if (error.response && error.response.status === 429) {
-			alert('API 호출 횟수가 초과 되었습니다. 로컬 데이터를 사용합니다.');
-			flag = !flag;
-			findChart(req, res);
-		} else {
-			console.error(error);
-			res.status(500).json({ success: false, message: 'Server error', error: error.toString() });
-		}
+		res.status(500).json({ success: false, message: 'Server error', error: error.toString() });
 	}
 };
