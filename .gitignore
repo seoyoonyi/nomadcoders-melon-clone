@@ -4,3 +4,5 @@
 .DS_Store
 /assets
 /build
+# Local Netlify folder
+.netlify

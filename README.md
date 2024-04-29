@@ -4,7 +4,7 @@
 
 </br>
 
-> [🚀 HAPPY MUSIC 바로가기](https://happymusic.fly.dev/)
+> [🚀 HAPPY MUSIC 바로가기](https://happyhappymusic.netlify.app)
 >
 > 테스트 계정
 >

@@ -14,7 +14,7 @@ import likedSongRouter from './routers/likedSongRouter';
 const app = express();
 const logger = morgan('dev');
 const corsOptions = {
-	origin: ['https://happymusic.fly.dev/', 'http://localhost:4000'],
+	origin: ['https://happyhappymusic.netlify.app', 'http://localhost:4000'],
 };
 
 app.set('view engine', 'pug');
