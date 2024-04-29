@@ -14,13 +14,19 @@ import likedSongRouter from './routers/likedSongRouter';
 const app = express();
 const logger = morgan('dev');
 const corsOptions = {
-	origin: ['https://happyhappymusic.netlify.app/', 'http://localhost:4000'],
+	origin: ['https://happyhappymusic.netlify.app', 'http://localhost:4000'],
+	credentials: true,
 };
 
+app.use(cors(corsOptions));
+
+app.get('/test-cors', cors(corsOptions), (req, res) => {
+	console.log('CORS Test route accessed!');
+	res.json({ message: 'CORS is working' });
+});
 app.set('view engine', 'pug');
 app.set('views', process.cwd() + '/src/views');
 
-app.use(cors(corsOptions));
 app.use(logger);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

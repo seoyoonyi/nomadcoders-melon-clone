@@ -4,9 +4,10 @@ import moment from 'moment';
 
 dotenv.config();
 const API_KEY = process.env.YOUTUBE_API_KEY;
-let flag = process.env.NODE_ENV === 'production';
-const YOTUBE_URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=CityPop&type=video&key=${API_KEY}&order=viewCount`;
-const yotubeApiUrl = flag ? YOTUBE_URL : 'http://localhost:4000/public/data/mock.json';
+// let flag = process.env.NODE_ENV === 'production';
+let flag = false;
+const YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=CityPop&type=video&key=${API_KEY}&order=viewCount`;
+const yotubeApiUrl = flag ? YOUTUBE_URL : 'http://localhost:4000/public/data/mock.json';
 
 export const findChart = async (req, res) => {
 	try {

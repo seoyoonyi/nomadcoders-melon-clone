@@ -26,7 +26,7 @@
 
 ## 2. 적용기술
 
-`HTML`, `CSS`, `JavaScript`, `MongoDB Atlas`, `fly`
+`HTML`, `CSS`, `JavaScript`, `MongoDB Atlas`,
 
 </br>
 
