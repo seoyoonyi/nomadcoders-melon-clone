@@ -2,8 +2,3 @@
 command = "CI=false npm run build"
 publish = "build/"
 
-[[redirects]]
-from = "https://happymusic.fly.dev/*"
-to = "https://happyhappymusic.netlify.app/:splat"
-status = 301
-force = true
