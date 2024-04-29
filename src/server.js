@@ -20,10 +20,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.get('/test-cors', cors(corsOptions), (req, res) => {
-	console.log('CORS Test route accessed!');
-	res.json({ message: 'CORS is working' });
-});
 app.set('view engine', 'pug');
 app.set('views', process.cwd() + '/src/views');
 
