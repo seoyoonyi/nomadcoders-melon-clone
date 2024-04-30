@@ -1,4 +1,3 @@
-//main.js
 import '../scss/styles.scss';
 import { addLikedSongs, getLikedSongs, removeLikedSongs } from './likedSongs';
 
@@ -67,7 +66,7 @@ const renderSongs = (songs) => {
 				thumbNailDiv.innerHTML = `<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">`;
 				titleDiv.textContent = songTitle;
 			}
-			togglePlayback(); // 음악이 이미 재생 중이라면 이 함수가 일시 정지를 수행합니다.
+			togglePlayback(); 
 			player.unMute();
 			bringToFront('#player-modal');
 		});
@@ -83,7 +82,7 @@ const renderSongs = (songs) => {
 				thumbNailDiv.innerHTML = `<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">`;
 				titleDiv.textContent = songTitle;
 			}
-			togglePlayback(); // 음악이 이미 재생 중이라면 이 함수가 일시 정지를 수행합니다.
+			togglePlayback(); 
 			player.unMute();
 			bringToFront('#player-modal');
 		});
@@ -167,7 +166,7 @@ const renderMyPlaylist = async () => {
 				thumbNailDiv.innerHTML = `<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">`;
 				titleDiv.textContent = songTitle;
 			}
-			togglePlayback(); // 음악이 이미 재생 중이라면 이 함수가 일시 정지를 수행합니다.
+			togglePlayback(); 
 			player.unMute();
 			bringToFront('#player-modal');
 		});
@@ -191,7 +190,7 @@ const renderMyPlaylist = async () => {
 				thumbNailDiv.innerHTML = `<img src="${song.thumbnail}" alt="${song.title}" width="120" height="90">`;
 				titleDiv.textContent = songTitle;
 			}
-			togglePlayback(); // 음악이 이미 재생 중이라면 이 함수가 일시 정지를 수행합니다.
+			togglePlayback(); 
 			player.unMute();
 			bringToFront('#player-modal');
 		});
@@ -205,13 +204,13 @@ const renderMyPlaylist = async () => {
 				try {
 					const existingSongs = await getLikedSongs();
 
-					// 이미 좋아요한 곡인지 확인
+			
 					const isAlreadyLiked = existingSongs.some(
 						(existingSong) =>
 							existingSong.videoId === song.videoId &&
 							existingSong.heartStatus === song.heartStatus,
 					);
-					// 이미 좋아요한 곡이라면 DB에서 해당 곡을 제거하고 함수 종료
+
 					if (isAlreadyLiked) {
 						const likedSong = existingSongs.find(
 							(existingSong) =>
@@ -219,7 +218,7 @@ const renderMyPlaylist = async () => {
 								existingSong.heartStatus === song.heartStatus,
 						);
 						if (likedSong && likedSong._id) {
-							await removeLikedSongs(likedSong._id); // DB에서 제거
+							await removeLikedSongs(likedSong._id); 
 							songTitleText.classList.add('playlist-remove');
 							heartChartButton.classList.remove('heart-active');
 							alert('좋아하는 노래 목록에서 해당 곡이 제거되었습니다.');
@@ -325,9 +324,8 @@ makeDraggable('#playlist-modal-header', '#playlist-modal');
 
 playlistMenu.addEventListener('click', async () => {
 	if (!isLoggedIn) {
-		// 사용자가 로그인하지 않았다면
 		const loginModal = document.querySelector('#login-modal');
-		loginModal.style.display = 'block'; // 로그인 모달창을 보여줍니다.
+		loginModal.style.display = 'block'; 
 	} else {
 		try {
 			const response = await getLikedSongs();
@@ -337,6 +335,6 @@ playlistMenu.addEventListener('click', async () => {
 		}
 
 		const playlistModal = document.querySelector('#playlist-modal');
-		playlistModal.style.display = 'block'; // 로그인 모달창을 보여줍니다.
+		playlistModal.style.display = 'block'; 
 	}
 });

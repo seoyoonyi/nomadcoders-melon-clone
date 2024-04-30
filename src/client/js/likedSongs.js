@@ -11,7 +11,6 @@ export const author = axios.create({
 });
 
 export const addLikedSongs = async (song) => {
-	// 새로운 좋아요 곡을 추가
 	const response = await author.post('/api/user/liked-song', song);
 	return response.data;
 };
@@ -25,12 +24,10 @@ export const removeLikedSongs = async (id) => {
 	await author.delete(`/api/user/liked-song/${id}`);
 };
 
-// 처음 페이지 로딩 시 좋아하는 곡 목록 불러오기
 window.addEventListener('DOMContentLoaded', async () => {
 	try {
 		const likedSongs = await getLikedSongs();
 
-		// 각각의 곡에 대해
 
 		likedSongs.forEach((song) => {
 			if (song.heartStatus === 'liked') {

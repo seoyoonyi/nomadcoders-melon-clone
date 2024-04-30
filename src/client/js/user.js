@@ -102,7 +102,6 @@ const handleRegisterFormSubmit = async (event) => {
 		});
 	} catch (error) {
 		updateSubmittingStatus(false);
-		// eslint-disable-next-line no-console
 		console.error(error);
 		if (error.response.status === 409) {
 			alert(error.response.data.message);
@@ -149,7 +148,6 @@ const handleLoginFormSubmit = async (event) => {
 		});
 	} catch (error) {
 		updateSubmittingStatus(false);
-		// eslint-disable-next-line no-console
 		console.error(error);
 		alert('이메일이나 비밀번호를 확인해주세요.');
 		return;

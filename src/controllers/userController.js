@@ -10,7 +10,6 @@ export const getAllUser = async (req, res) => {
 		const users = await User.find();
 		res.send(users);
 	} catch (error) {
-		// eslint-disable-next-line no-console
 		console.error(error);
 		res.status(500).json({ success: false, message: 'Server error', error: error.toString() });
 	}
@@ -25,11 +24,9 @@ export const loginUser = async (req, res) => {
 			return;
 		}
 
-		const token = jwtAuth.generateToken(foundUser); // 로그인 후 토큰 생성
+		const token = jwtAuth.generateToken(foundUser);
 		res.json({ userEmail, userPassword, token });
-		// res.cookie('token', token, { httpOnly: true }); // 쿠키에 토큰 저장
 	} catch (error) {
-		// eslint-disable-next-line no-console
 		console.error(error);
 		res.status(500).json({ success: false, message: 'Server error', error: error.toString() });
 	}
@@ -62,7 +59,6 @@ export const registerUser = async (req, res) => {
 		const user = await User.findOne({ email });
 
 		if (user) {
-			//중복 체크
 			return res.status(409).json({ success: false, message: '이미 가입된 회원입니다.' });
 		}
 
@@ -77,7 +73,6 @@ export const registerUser = async (req, res) => {
 
 		res.status(201).json({ success: true });
 	} catch (error) {
-		// eslint-disable-next-line no-console
 		console.error(error);
 		res.status(500).json({ success: false, message: 'Server error', error: error.toString() });
 	}

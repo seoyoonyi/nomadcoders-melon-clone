@@ -39,12 +39,11 @@ window.onYouTubeIframeAPIReady = () => {
 	});
 };
 
-let popularSongsList = []; // 인기 차트 목록
-let currentSongIndex = 0; // 현재 재생 중인 곡의 인덱스
-let playlistSongsList = []; // 사용자 재생 목록
-let isPlaylistMode = false; // 사용자 재생 목록 모드
+let popularSongsList = [];  
+let currentSongIndex = 0;
+let playlistSongsList = []; 
+let isPlaylistMode = false; 
 
-// 인기 차트 목록 가져오기
 export const getPopularSongs = async () => {
 	try {
 		const response = await axios.get(`${API_URL}/api/chart`);
@@ -57,7 +56,6 @@ export const getPopularSongs = async () => {
 	}
 };
 
-// 사용자 재생 목록 가져오기
 export const getUserPlaylist = async () => {
 	try {
 		const response = await getLikedSongs();
@@ -68,7 +66,6 @@ export const getUserPlaylist = async () => {
 	}
 };
 
-// 사용자가 플레이리스트에 있는 특정 곡을 클릭하여 재생하는 경우
 export const playSongFromPlaylist = async (url, index) => {
 	pauseButton.classList.remove('hidden');
 	playButton.classList.add('hidden');
@@ -77,7 +74,6 @@ export const playSongFromPlaylist = async (url, index) => {
 	await playSong(url);
 };
 
-// 썸네일과 제목을 UI에 반영
 const updatePlayerUI = (title, thumbnail) => {
 	const titleElement = document.querySelector('.audio-info-box .title');
 	const thumbnailElement = document.querySelector('.audio-info-box .thumb-nail');
@@ -89,7 +85,6 @@ const updatePlayerUI = (title, thumbnail) => {
 	thumbnailElement.appendChild(thumbnailImg);
 };
 
-// 다음 곡 재생
 const playNextSong = () => {
 	let songList = isPlaylistMode ? playlistSongsList : popularSongsList;
 
@@ -107,7 +102,6 @@ const playNextSong = () => {
 	}
 };
 
-// 이전 곡 재생
 const playPreviousSong = () => {
 	let songList = isPlaylistMode ? playlistSongsList : popularSongsList;
 
@@ -125,7 +119,6 @@ const playPreviousSong = () => {
 	}
 };
 
-// 곡 상태 변화 이벤트
 const onPlayerStateChange = (event) => {
 	if (event.data === YT.PlayerState.PLAYING) {
 		progressBar.max = player.get;
@@ -133,7 +126,7 @@ const onPlayerStateChange = (event) => {
 		setInterval(() => updateProgressBar(player), 1000);
 	}
 	if (event.data === YT.PlayerState.ENDED) {
-		playNextSong(); // 현재 곡이 끝나면 다음 곡을 재생합니다.
+		playNextSong(); 
 		lastVideoId = null;
 	} else {
 		lastVideoId = videoId;
@@ -159,7 +152,7 @@ export const playSong = async (url) => {
 				startSeconds: 0,
 			});
 			player.playVideo();
-			isPlaying = true; // 여기에 isPlaying을 true로 업데이트 해줍니다.
+			isPlaying = true; 
 		}
 	}
 };
@@ -223,10 +216,10 @@ export const togglePlayback = () => {
 
 export const restartPlayback = () => {
 	if (player) {
-		const currentTime = player.getCurrentTime(); // 현재 재생 시간 가져오기
+		const currentTime = player.getCurrentTime();
 		player.loadVideoById({
 			videoId: videoId,
-			startSeconds: currentTime, // 현재 재생 시간으로 시작 시간 설정
+			startSeconds: currentTime, 
 		});
 		player.unMute();
 		player.playVideo();
@@ -283,12 +276,12 @@ progressContainer.addEventListener('click', (event) => {
 	player.seekTo(seekTime, true);
 });
 
-// 이전 곡 버튼 이벤트 리스너
+
 backwardButton.addEventListener('click', () => {
 	playPreviousSong();
 });
 
-// 다음 곡 버튼 이벤트 리스너
+
 forwardButton.addEventListener('click', () => {
 	playNextSong();
 });

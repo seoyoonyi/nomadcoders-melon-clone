@@ -27,10 +27,9 @@ export default class JWTAuth {
 
 	verifyToken(token, func) {
 		try {
-			const decoded = verify(token, this.secretKey, func); // 토큰 검증
+			const decoded = verify(token, this.secretKey, func); 
 			return decoded;
 		} catch (error) {
-			// eslint-disable-next-line no-console
 			console.error(error);
 			return null;
 		}

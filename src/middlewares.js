@@ -40,7 +40,6 @@ export const authenticateUser = async (req, res, next) => {
 		req.user = user;
 		next();
 	} catch (error) {
-		// eslint-disable-next-line no-console
 		console.error(error);
 		res.status(400).json({ error: 'Invalid token.' });
 	}
