@@ -4,11 +4,13 @@
 	"description": "xxxx",
 	"scripts": {
 		"start": "node build/init.js",
-		"build": "npm run build:server && npm run build:assets",
-		"build:server": "babel src -d build",
+		"build": "npm run build:server && npm run build:assets && npm run build:pug",
+		"build:server": "babel src -d build/server",
 		"build:assets": "NODE_ENV=production webpack --mode=production",
+		"build:pug": "pug src/views -o build/client",
 		"dev:server": "nodemon",
-		"dev:assets": "cross-env NODE_ENV=development webpack --mode=development -w"
+		"dev:assets": "cross-env NODE_ENV=development webpack --mode=development -w",
+		"dev:netlify": "netlify dev"
 	},
 	"dependencies": {
 		"@ffmpeg/core": "^0.8.5",
@@ -30,7 +32,7 @@
 		"morgan": "^1.10.0",
 		"multer": "^1.4.2",
 		"multer-s3": "^2.9.0",
-		"netlify-cli": "^17.23.1",
+		"netlify-cli": "^17.19.4",
 		"node-fetch": "^2.6.1",
 		"postcss": "^8.4.21",
 		"pug": "^2.0.4",
@@ -52,6 +54,7 @@
 		"html-webpack-plugin": "^5.6.0",
 		"mini-css-extract-plugin": "^1.5.0",
 		"nodemon": "^2.0.7",
+		"pug-cli": "^1.0.0-alpha6",
 		"pug-loader": "^2.4.0",
 		"sass": "^1.32.10",
 		"sass-loader": "^11.0.1",
