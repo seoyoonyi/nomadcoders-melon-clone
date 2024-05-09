@@ -4,12 +4,7 @@
 
 </br>
 
-> [🚀 HAPPY MUSIC 바로가기](https://happyhappymusic.netlify.app)
->
-> 테스트 계정
->
-> - 이메일: `test@gmail.com`
-> - 비밀번호: `Test1234`
+> [🚀 HAPPY MUSIC 배포 사이트 변경중]()
 
 </br>
 
